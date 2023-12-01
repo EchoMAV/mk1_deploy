@@ -1,1 +1,1 @@
-MavnetProxy (0.1e with Video)
+MavnetProxy (0.1e)
