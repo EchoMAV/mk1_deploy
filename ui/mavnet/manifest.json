@@ -1,0 +1,11 @@
+{
+    "version": 0,
+
+    "menu": {
+        "mavnet": {
+            "label": "H31 Proxy Configuration",
+            "path": "mavnet.html",
+            "order": 1
+        }
+    }
+}
