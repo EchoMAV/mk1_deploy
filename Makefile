@@ -7,10 +7,11 @@ SUDO := $(shell test $${EUID} -ne 0 && echo "sudo")
 
 SERIAL ?= $(shell python3 serial_number.py)
 LOCAL=/usr/local
-LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh 
+LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/serial_number.py
 CONFIG ?= /var/local
 LIBSYSTEMD=/lib/systemd/system
-SERVICES=mavnetProxy.service temperature.service
+PKGDEPS ?= v4l-utils build-essential
+SERVICES=mavnetProxy.service temperature.service video.service
 SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
@@ -29,6 +30,9 @@ default:
 clean:
 	@if [ -d src ] ; then cd src && make clean ; fi
 
+dependencies:	
+	@if [ ! -z "$(PKGDEPS)" ] ; then $(SUDO) apt-get install -y $(PKGDEPS) ; fi
+
 disable:
 	@( for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true )
 
@@ -38,11 +42,19 @@ enable:
 	@if [ ! -z "$(SERVICES)" ] ; then $(SUDO) systemctl daemon-reload ; fi
 	@( for s in $(SERVICES) ; do $(SUDO) systemctl enable $${s%.*} ; done ; true )
 	@echo ""
-	@echo "Service is installed. To run now use sudo systemctl start mavnetProxy"
+	@echo "mavnetProxy Service is installed. To run now use sudo systemctl start mavnetProxy or reboot"
 	@echo "Inspect output with sudo journalctl -fu mavnetProxy"
 	@echo ""
+	@echo "video Service is installed. To run now use sudo systemctl start video or reboot"
+	@echo "Inspect output with sudo journalctl -fu video"
 
-install: 	
+install: dependencies	
+
+# install video prequisites
+	$(SUDO) apt update
+	@PLATFORM=$(PLATFORM) ./ensure-gst.sh $(DRY_RUN)
+	@PLATFORM=$(PLATFORM) ./ensure-gstd.sh $(DRY_RUN)	
+
 # install cockpit
 	@$(SUDO) ./ensure-cockpit.sh
 
@@ -88,7 +100,8 @@ install:
 
 # install mavnetProxy files
 	@[ -d $(LOCAL)/echopilot/mavnetProxy ] || $(SUDO) mkdir $(LOCAL)/echopilot/mavnetProxy
-	@$(SUDO) cp -a bin/. $(LOCAL)/echopilot/mavnetProxy/
+	@$(SUDO) cp -a bin/. $(LOCAL)/echopilot/mavnetProxy/  
+# The baseline configuration files are including in this folder including video.conf
 	@$(SUDO) chmod +x $(LOCAL)/echopilot/mavnetProxy/mavnetProxy
 
 # install services and enable them
@@ -102,15 +115,20 @@ install:
 	@$(SUDO) systemctl disable nvgetty
 	@$(SUDO) usermod -aG dialout echopilot
 	@$(SUDO) usermod -aG tty echopilot
+	@echo "Please access the web UI to change settings..."
 	@echo "Please reboot to complete the installation..."
 
 see:
 	$(SUDO) cat $(SYSCFG)/mavnetProxy.conf
-	$(SUDO) cat $(SYSCFG)/mavnet.conf
+#   mavnet conf not applicable yet
+#	$(SUDO) cat $(SYSCFG)/mavnet.conf
+	$(SUDO) cat $(SYSCFG)/video.conf
+
 
 uninstall:
 	@$(MAKE) --no-print-directory disable
 	@( for s in $(SERVICES) ; do $(SUDO) rm $(LIBSYSTEMD)/$${s%.*}.service ; done ; true )
 	@if [ ! -z "$(SERVICES)" ] ; then $(SUDO) systemctl daemon-reload ; fi
+	$(SUDO) rm -f $(SYSCFG)
 
 
