@@ -1,7 +1,8 @@
 #!/bin/bash
 # script to start the MK1 video streaming service
 # 
-# This starts two different streams: LOS and RTMP to the video server. 
+# This starts two different streams: LOS and RTMP to the video server. The RTMP stream to the server must be manually started using gst-client pipeline_play server
+# A snapshot pipeline is also created, which can then be activating using the snap.sh script in this repo
 
 SUDO=$(test ${EUID} -ne 0 && which sudo)
 LOCAL=/usr/local
@@ -32,9 +33,6 @@ gst-client pipeline_create snapshot interpipesrc listen-to=h265src is-live=true 
 
 # start source pipeline streaming
 gst-client pipeline_play h265src
-
-# start server pipeline streaming
-gst-client pipeline_play server
 
 # start los pipeline streaming
 # Per nevtvision v1.11.10, use the dual stream fuctionality to send to the LOS endpoint
