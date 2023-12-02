@@ -10,7 +10,7 @@ LOCAL=/usr/local
 LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/serial_number.py
 CONFIG ?= /var/local
 LIBSYSTEMD=/lib/systemd/system
-PKGDEPS ?= v4l-utils build-essential
+PKGDEPS ?= v4l-utils build-essential nano nload htop
 SERVICES=mavnetProxy.service temperature.service video.service
 SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
@@ -45,7 +45,7 @@ enable:
 	@echo "mavnetProxy Service is installed. To run now use sudo systemctl start mavnetProxy or reboot"
 	@echo "Inspect output with sudo journalctl -fu mavnetProxy"
 	@echo ""
-	@echo "video Service is installed. To run now use sudo systemctl start video or reboot"
+	@echo "Video Service is installed. To run now use sudo systemctl start video or reboot"
 	@echo "Inspect output with sudo journalctl -fu video"
 
 install: dependencies	
@@ -73,14 +73,8 @@ install: dependencies
 	@$(SUDO) cp -rf ui/base1/* /usr/share/cockpit/base1/
 	@$(SUDO) install -Dm755 version.txt $(LOCAL)/echopilot/.	
 
-# set up useful apps files
-	@$(SUDO) apt install nano
-	@$(SUDO) apt install nload
-	@$(SUDO) apt install htop
-	@$(SUDO) apt install picocom
-
 # set up folders used by mavnetProxy
-
+	@echo "Setting up mavnetProxy Folders"
 	@[ -d /mnt/data/mission ] || $(SUDO) mkdir -p /mnt/data/mission
 	@[ -d /mnt/container ] || $(SUDO) mkdir -p /mnt/container
 	@[ -d /mnt/data/tmp_images ] || $(SUDO) mkdir -p /mnt/data/tmp_images
@@ -89,27 +83,34 @@ install: dependencies
 	@[ -d $(LOCAL)/echopilot ] || $(SUDO) mkdir $(LOCAL)/echopilot
 
 # install any UDEV RULES
+	@echo "Installing UDEV rules"
 	@for s in $(RULES) ; do $(SUDO) install -Dm644 $${s%.*}.rules $(UDEVRULES)/$${s%.*}.rules ; done
 	@if [ ! -z "$(RULES)" ] ; then $(SUDO) udevadm control --reload-rules && udevadm trigger ; fi
 
 # install LOCAL_SCRIPTS
+	@echo "Installing Local Scripts"
 	@for s in $(LOCAL_SCRIPTS) ; do $(SUDO) install -Dm755 $${s} $(LOCAL)/echopilot/$${s} ; done
 
 # stop and disable services
+	@echo "Disabling running services..."
 	@for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true
 
 # install mavnetProxy files
+	@echo "Installing mavnetProxy files..."
 	@[ -d $(LOCAL)/echopilot/mavnetProxy ] || $(SUDO) mkdir $(LOCAL)/echopilot/mavnetProxy
 	@$(SUDO) cp -a bin/. $(LOCAL)/echopilot/mavnetProxy/  
 # The baseline configuration files are including in this folder including video.conf
 	@$(SUDO) chmod +x $(LOCAL)/echopilot/mavnetProxy/mavnetProxy
 
 # install services and enable them
+	@echo "Installing services files..."
 	@for s in $(SERVICES) ; do $(SUDO) install -Dm644 $${s%.*}.service $(LIBSYSTEMD)/$${s%.*}.service ; done
 	@if [ ! -z "$(SERVICES)" ] ; then $(SUDO) systemctl daemon-reload ; fi
+	@echo "Enabling services files..."
 	@for s in $(SERVICES) ; do $(SUDO) systemctl enable $${s%.*} ; done
 
 # cleanup and final settings
+	@echo "Final cleanup..."
 	@$(SUDO) chown -R echopilot /usr/local/echopilot
 	@$(SUDO) systemctl stop nvgetty
 	@$(SUDO) systemctl disable nvgetty
