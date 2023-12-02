@@ -3,7 +3,10 @@
 
 ## Dependencies
 
-will be installed automatically by during a `make install` assuming you have an internet connection  
+Requires git-lfs
+```sudo apt-get install git-lfs -y```
+
+Other dependencies will be installed automatically by during a `make install` assuming you have an internet connection  
 
 ## Installation
 
