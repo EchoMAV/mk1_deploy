@@ -79,8 +79,8 @@ install: dependencies
 	@[ -d /mnt/container ] || $(SUDO) mkdir -p /mnt/container
 	@[ -d /mnt/data/tmp_images ] || $(SUDO) mkdir -p /mnt/data/tmp_images
 	@[ -d /mnt/container/image ] || $(SUDO) mkdir -p /container/image
-	@[ -d /mnt/data/mission/processed_images] || $(SUDO) mkdir -p /mnt/data/mission/processed_images
-	@[ -d $(LOCAL)/echopilot ] || $(SUDO) mkdir $(LOCAL)/echopilot
+	@[ -d /mnt/data/mission/processed_images ] || $(SUDO) mkdir -p /mnt/data/mission/processed_images
+	@[ -d $(LOCAL)/echopilot ] || $(SUDO) mkdir -p $(LOCAL)/echopilot
 
 # install any UDEV RULES
 	@echo "Installing UDEV rules"
