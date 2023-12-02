@@ -6,8 +6,8 @@ RequiresMountsFor=/etc /usr
 
 [Service]
 Type=forking
-ExecStart=/usr/local/bin/start-video.sh
-EnvironmentFile=/usr/local/echopilot/conf/video.conf
+ExecStart=/usr/local/echopilot/scripts/start-video.sh
+EnvironmentFile=/usr/local/echopilot/mavnetProxy/video.conf
 RuntimeDirectory=video-stream
 RuntimeDirectoryMode=0755
 ExecStartPre=/bin/sleep 15
