@@ -37,9 +37,11 @@ disable:
 	@( for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true )
 
 enable:
-	@( for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true )
+	@echo "Installing service files..."
+	@( for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true )	
 	@( for s in $(SERVICES) ; do $(SUDO) install -Dm644 $${s%.*}.service $(LIBSYSTEMD)/$${s%.*}.service ; done ; true )
 	@if [ ! -z "$(SERVICES)" ] ; then $(SUDO) systemctl daemon-reload ; fi
+	@echo "Enabling services files..."
 	@( for s in $(SERVICES) ; do $(SUDO) systemctl enable $${s%.*} ; done ; true )
 	@echo ""
 	@echo "mavnetProxy Service is installed. To run now use sudo systemctl start mavnetProxy or reboot"
@@ -103,11 +105,7 @@ install: dependencies
 	@$(SUDO) chmod +x $(LOCAL)/echopilot/mavnetProxy/mavnetProxy
 
 # install services and enable them
-	@echo "Installing service files..."
-	@for s in $(SERVICES) ; do $(SUDO) install -Dm644 $${s%.*}.service $(LIBSYSTEMD)/$${s%.*}.service ; done
-	@if [ ! -z "$(SERVICES)" ] ; then $(SUDO) systemctl daemon-reload ; fi
-	@echo "Enabling services files..."
-	@for s in $(SERVICES) ; do $(SUDO) systemctl enable $${s%.*} ; done
+	@$(MAKE) --no-print-directory enable
 
 # cleanup and final settings
 	@echo "Final cleanup..."
