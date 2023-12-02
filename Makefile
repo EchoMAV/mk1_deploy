@@ -7,7 +7,7 @@ SUDO := $(shell test $${EUID} -ne 0 && echo "sudo")
 
 SERIAL ?= $(shell python3 serial_number.py)
 LOCAL=/usr/local
-LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/serial_number.py
+LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/serial_number.py scripts/snap.sh
 CONFIG ?= /var/local
 LIBSYSTEMD=/lib/systemd/system
 PKGDEPS ?= v4l-utils build-essential nano nload htop
@@ -74,7 +74,7 @@ install: dependencies
 	@$(SUDO) install -Dm755 version.txt $(LOCAL)/echopilot/.	
 
 # set up folders used by mavnetProxy
-	@echo "Setting up mavnetProxy Folders"
+	@echo "Setting up mavnetProxy folders..."
 	@[ -d /mnt/data/mission ] || $(SUDO) mkdir -p /mnt/data/mission
 	@[ -d /mnt/container ] || $(SUDO) mkdir -p /mnt/container
 	@[ -d /mnt/data/tmp_images ] || $(SUDO) mkdir -p /mnt/data/tmp_images
@@ -83,12 +83,12 @@ install: dependencies
 	@[ -d $(LOCAL)/echopilot ] || $(SUDO) mkdir -p $(LOCAL)/echopilot
 
 # install any UDEV RULES
-	@echo "Installing UDEV rules"
+	@echo "Installing UDEV rules..."
 	@for s in $(RULES) ; do $(SUDO) install -Dm644 $${s%.*}.rules $(UDEVRULES)/$${s%.*}.rules ; done
 	@if [ ! -z "$(RULES)" ] ; then $(SUDO) udevadm control --reload-rules && udevadm trigger ; fi
 
 # install LOCAL_SCRIPTS
-	@echo "Installing Local Scripts"
+	@echo "Installing local scripts..."
 	@for s in $(LOCAL_SCRIPTS) ; do $(SUDO) install -Dm755 $${s} $(LOCAL)/echopilot/$${s} ; done
 
 # stop and disable services
@@ -103,7 +103,7 @@ install: dependencies
 	@$(SUDO) chmod +x $(LOCAL)/echopilot/mavnetProxy/mavnetProxy
 
 # install services and enable them
-	@echo "Installing services files..."
+	@echo "Installing service files..."
 	@for s in $(SERVICES) ; do $(SUDO) install -Dm644 $${s%.*}.service $(LIBSYSTEMD)/$${s%.*}.service ; done
 	@if [ ! -z "$(SERVICES)" ] ; then $(SUDO) systemctl daemon-reload ; fi
 	@echo "Enabling services files..."
