@@ -6,239 +6,70 @@
     <link href="../base1/bootstrap.min.css" type="text/css" rel="stylesheet">
     <script src="../base1/cockpit.js"></script>
 </head>
+
 <body>
-   <div class="pf-c-page">
+    <div class="pf-c-page">
         <main class="pf-c-page__main" tabindex="-1">
             <section class="pf-c-page__main-section pf-m-light">
 
-                <div class="col-sm-7">
-                    <p class="fw-bold fs-2 ms-3 mt-3">Video and Audio Settings</p>
+                <div class="row justify-content-start">
+                    <div class="col-lg-12 ms-3"><p class="fw-bold fs-2 mt-3 mb-0">Video Configuration</p> </div>                    
                    
-                    <table class="table caption-top table-borderless ms-3" id="the-table">
-                        <caption>The PixC4-Jetson provides multiple video and audio streams. You can change the parameters for each below. To disable a stream, enter 0 for the birate.</caption>
-                        <tr>
-                            <td><label class="control-label" for="deivceH264">Device H264</label></td>
-                            <td><select id="deviceH264"></select></td>
-                        </tr>
-                        
-                        <tr">
-                            <td><label class="control-label" for="deivceX">Device XRaw</label></td>
-                            <td><select id="deviceX"></select></td>
-                        </tr>
-                        
-                        <tr>
-                            <td><label class="control-label" for="width">Frame Width and Height</label></td>
-                            <td><select id="widthAndHeight" ></select></td>
-                        </tr>
-                        <!-- <tr>
-                            <td><label class="control-label" for="height">Frame Height</label></td>
-                            <td><input id="height"></td>
-                        </tr> -->
-                        <tr>
-                            <td><label class="control-label" for="fps">Frames Per Second</label></td>
-                            <td><select id="fps"></select></td>
-                        </tr>
-                        <tr><td colspan="2"><p class="fw-bold fs-5 mt-3">Primary Video Stream Encoding</p><p class="fw-light fs-6">This stream is used for video over the primary low-latency and high-bandwdith radio link. Typical bitrates are 1000-4000 kpbs. </p></td></tr>
-                        <tr>
-                            <td><label class="control-label" for="losBitrate">Bitrate</label></td>
-                            <td><select id="losBitrate"></select></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="losHost">Host</label></td>
-                            <td><input id="losHost"></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="losPort">Port</label></td>
-                            <td><input id="losPort" ></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="losIface">Interface</label></td>
-                            <td><select id="losIface"></select></td>
-                        </tr>
-                        <tr><td colspan="2"><p class="fw-bold fs-5 mt-3">Backup MAVPN Video Stream Encoding</p><p class="fw-light fs-6">This stream is used for video over the secondary link via the MAVPN connection, which is typically a lower-bandwith link like cellular. Typical bitrates are 800-2000 kpbs. </p></td></tr>
-                        <tr>
-                            <td><label class="control-label" for="mavBitrate">Bitrate</label></td>
-                            <td><select id="mavBitrate"></select></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="mavHost">Host</label></td>
-                            <td><input id="mavHost"></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="mavPort">Port</label></td>
-                            <td><input id="mavPort" ></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="mavIface">Interface</label></td>
-                            <td><select id="mavIface"></select></td>
-                        </tr>
-                        <tr><td colspan="2"><p class="fw-bold fs-5 mt-3">ATAK Stream Encoding</p><p class="fw-light fs-6">This stream is used for video to the TAK network. These streams are typically used on small screens. Typical bitrates are 500-1000 kpbs. </p></td></tr>
-                        <tr>
-                            <td><label class="control-label" for="atakBitrate">Bitrate</label></td>
-                            <td><select id="atakBitrate"></select></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="atakHost">Host</label></td>
-                            <td><input id="atakHost"></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="atakPort">Port</label></td>
-                            <td><input id="atakPort" ></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="atakIface">Interface</label></td>
-                            <td><select id="atakIface"></select></td>
-                        </tr>
-                        <tr><td colspan="2"><p class="fw-bold fs-5 mt-3">MAVNet Video Server Stream Encoding</p><p class="fw-light fs-6">This stream is sent to the MAVNet cloud video distribution server and display on the webGCS user interfaces. It uses the link which provides an Internet route (typically cellular). Consider that total cellular bandwidth usage is this stream combined with the MAVPN stream. Typical bitrates are 500-1500 kbps.</p></td></tr>
-                        <tr>
-                            <td><label class="control-label" for="videoBitrate">Bitrate</label></td>
-                            <td><select id="videoBitrate"></select></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="videoHost">Server Address</label></td>
-                            <td><input id="videoHost"></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="videoPort">Port</label></td>
-                            <td><input id="videoPort" ></td>
-                        </tr>        
-                        <tr>
-                            <td title="This is the MAVNet organization code for this asset, e.g. H31."><label class="control-label" for="videoOrg">Organization Code</label></td>
-                            <td><input id="videoOrg"></td>
-                        </tr>
-                        <tr>
-                            <td title="This is a unique name for this device which will be used by the video distribution server."><label class="control-label" for="videoName">Streamname</label></td>
-                            <td><input id="videoName"></td>
-                        </tr>
-                        <tr><td colspan="2"><p class="fw-bold fs-5 mt-3">Audio Stream Encoding</p><p class="fw-light fs-6">The audio encoding information below is used for both the primary link and the backup link. Typical bitrate is 128 kbps.</p></td></tr>
-                        <tr>
-                            <td><label class="control-label" for="audioBitrate">Bitrate</label></td>
-                            <td><select id="audioBitrate"></select></td>
-                        </tr>
-                        <tr>
-                            <td><label class="control-label" for="audioPort">Port</label></td>
-                            <td><input id="audioPort"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><input hidden id="platform"></td>
-                        </tr>
-                        <tr>
-                            <td><button class="btn-primary" id="save">Save</button></td>
-                            <td><span id="result"></span></td>
-                        </tr>
-                    </table>
-                    <pre id="output"></pre>
+                    <div class="col-lg-12 ms-3"><p class="mt-1 me-3">Use the settings below to change the video streaming settings. To disable a stream, enter 0 for the birate.</p></div>
+                    <div class="col-lg-12 ms-3"><p class="mt-1 me-3">The MK1 in this configuration is designed to be used with a Raptor 360 + TRIP6 module set up with TRIP6 firmware v.1.11.10+ and one of the streams pointing to this IP address (<strong><span id='myIP'></span></strong>).</p></div>
+                    <div class="col-lg-12 ms-3"><p class="mt-1 me-3">The TRIP6 Settings must match those below:</p>
+                        <ul>
+                            <li>Channel-0 Settings > Video > Encapsulation Format = RTP/AVP</li>
+                            <li>Channel-0 Settings > Video > Destination IP = The endpoint of the primary local GCS</li>
+                            <li>Channel-0 Settings > Video > Destination Port = The port used by the GCS to receive video, typically 5600</li>
+                            <li>Channel-0 Settings > Video > 2nd Stream Enable = CHECKED</li>
+                            <li>Channel-0 Settings > Video > 2nd Stream Destination IP = The IP address of this EchoPilot AI device (<span id='myIP2'></span>) (multicast groups can be used as well)</li>
+                            <li>Channel-0 Settings > Video > 2nd Stream Destination Port = The port you wish to receive video on with this app, must match the setting below. Default 7000</li>
+                            <li>Recommend Channel Settings > Encoder Settings > Stream Bitrate [kbps] of 2000</li>
+                        </ul>
+                    </div>
+
+                    
+                <div class="row justify-content-start">
+                    <div class="col ms-3"><p class="fw-bold fs-5 mt-3 mb-0"><img src="settings_ethernet.svg" class="me-2">Gimbal Stream Setup</p><p class="fw-light fs-6">Input the port used to received video from the TRIP6 system onboard the MK1. This should match the Channel-0-Settings > Video > 2nd Stream Destination Port on the TRIP6 configuration page. Default value is 7000.</p></div>   
                 </div>
 
-                <!--
-                <table class="form-table-ct" id="the-table">
-                    <tr>
-                        <td><label class="control-label" for="deivceH264">Device H264</label></td>
-                        <td><input id="deviceH264"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="deivceX">Device XRaw</label></td>
-                        <td><input id="deviceX"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="width">Video Frame Width</label></td>
-                        <td><input id="width" ></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="height">Video Height</label></td>
-                        <td><input id="height"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="fps">Video Frames Per Second</label></td>
-                        <td><input id="fps"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="losBitrate">LOS Bitrate</label></td>
-                        <td><input id="losBitrate"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="losHost">LOS Host</label></td>
-                        <td><input id="losHost"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="losPort">LOS Port</label></td>
-                        <td><input id="losPort" ></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="losIface">LOS Interface</label></td>
-                        <td><input id="losIface"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="mavHost">MAVPN Host</label></td>
-                        <td><input id="mavHost"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="mavPort">MAVPN Port</label></td>
-                        <td><input id="mavPort" ></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="mavIface">MAVPN Interface</label></td>
-                        <td><input id="mavIface"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="mavBitrate">MAVPN Bitrate</label></td>
-                        <td><input id="mavBitrate"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="atakHost">ATAK Host</label></td>
-                        <td><input id="atakHost"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="atakPort">ATAK Port</label></td>
-                        <td><input id="atakPort" ></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="atakIface">ATAK Interface</label></td>
-                        <td><input id="atakIface"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="atakBitrate">ATAK Bitrate</label></td>
-                        <td><input id="atakBitrate"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="videoHost">Video Server Host</label></td>
-                        <td><input id="videoHost"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="videoPort">Video Server Port</label></td>
-                        <td><input id="videoPort" ></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="videoBitrate">Video Server Bitrate</label></td>
-                        <td><input id="videoBitrate"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="videoOrg">Video Server Organization</label></td>
-                        <td><input id="videoOrg"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="videoName">Video Server Streamname</label></td>
-                        <td><input id="videoName"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="audioPort">Audio Port</label></td>
-                        <td><input id="audioPort"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="audioBitrate">Audio Bitrate</label></td>
-                        <td><input id="audioBitrate"></td>
-                    </tr>
-                    <tr>
-                        <td><label class="control-label" for="platform">Platform</label></td>
-                        <td><input id="platform"></td>
-                    </tr>
-                    <tr>
-                        <td><button class="pf-c-button pf-m-primary" id="save">Save</button></td>
-                        <td><span id="result"></span></td>
-                    </tr>
-                </table>
+                <div class="row justify-content-start">
+                    <div class="col-2 ms-3 mt-3"><label class="control-label" for="gimbalPort">TRIP6 Receive Port</label></div>
+                    <div class="col mt-3"><input id="gimbalPort"></div></div>
+                </div>
+
+                <div class="row justify-content-start">
+                    <div class="col ms-3"><p class="fw-bold fs-5 mt-3 mb-0"><img src="settings_ethernet.svg" class="me-2">Server Stream Setup</p><p class="fw-light fs-6">Input the parameters to control the cloud video stream. Use of this stream requires the MK1 to have internet connection. For LTE, it is recommended to use the lowest bitrate which provides acceptable quality. The Stream Name is a unique ID for the video stream, typically set to the aircraft's serial number.</p></div>   
+                </div>
+
+                <div class="row justify-content-start">
+                    <div class="col-2 ms-3 mt-3"><label class="control-label" for="videoHost">Server URL</label></div>
+                    <div class="col mt-3"><input id="videoHost"></div>
+                </div>
+                <div class="row justify-content-start">
+                    <div class="col-2 ms-3 mt-3"><label class="control-label" for="videoPort">Port</label></div>
+                    <div class="col mt-3"><input id="videoPort"></div>
+                </div>
+
+                <div class="row justify-content-start">
+                    <div class="col-2 ms-3 mt-3"><label class="control-label" for="videoBitrate">Bitrate</label></div>
+                    <div class="col mt-3"><select id="videoBitrate"></select></div>
+                </div>
+
+
+                <div class="row justify-content-start">
+                    <div class="col-2 ms-3 mt-3"><label class="control-label" for="videoName">Stream Name</label></div>
+                    <div class="col mt-3"><input id="videoName"></div></div>
+                </div>
+              
+                <div class="row justify-content-start">
+                    <div class="col-2 ms-3 mt-3"><button class="btn-primary" id="save">Save/Update</button></div>
+                    <div class="col mt-3"><span id="result"></span></div>
+                </div>
+
+
                 <pre id="output"></pre>
-            -->
             </section>
         </main>
     </div>

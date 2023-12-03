@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Only used by cockpit to get some information from the filesystem
+# Only used by cockpit to get/set some information from the filesystem
 
 function ApnChange
 {
@@ -12,8 +12,7 @@ function ApnChange
 
 while [[ $# -gt 0 ]]; do 
     key="$1"
-    shift
-    shift
+    shift  
 
     case $key in
         -a)
@@ -42,6 +41,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -u)
             hostname -I | awk '{print $1}' | cut -d'.' -f1,2
+            exit 0
+            ;;
+        -z)
+            hostname -I
             exit 0
             ;;
     esac

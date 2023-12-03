@@ -10,13 +10,13 @@ LOCAL=/usr/local
 LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/serial_number.py scripts/snap.sh
 CONFIG ?= /var/local
 LIBSYSTEMD=/lib/systemd/system
-PKGDEPS ?= v4l-utils build-essential nano nload htop
+PKGDEPS ?= v4l-utils build-essential nano nload htop modemmanager
 SERVICES=mavnetProxy.service temperature.service video.service
 SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
 
-.PHONY = clean dependencies cockpit enable install provision see uninstall 
+.PHONY = clean dependencies cockpit cellular enable install provision see uninstall 
 
 default:
 	@echo "Please choose an action:"
@@ -33,6 +33,10 @@ clean:
 dependencies:	
 	@if [ ! -z "$(PKGDEPS)" ] ; then $(SUDO) apt-get install -y $(PKGDEPS) ; fi
 
+cellular:
+# remove --defaults if you want interactive, otherwise it'll use the default ATT Broadband
+	@$(SUDO) ./ensure-cellular.sh --defaults
+
 cockpit:
 	@$(SUDO) ./ensure-cockpit.sh
 
@@ -48,7 +52,7 @@ cockpit:
 	@$(SUDO) mkdir /usr/share/cockpit/video/
 	@$(SUDO) cp -rf ui/video/* /usr/share/cockpit/video/
 	@$(SUDO) mkdir /usr/share/cockpit/cellular
-	@$(SUDO) cp -rf ui/cellular/* /usr/share/cockpit/cellular/
+	@$(SUDO) cp -rf ui/cellular/* /usr/share/cockpit/cellular/		
 	@$(SUDO) cp -rf ui/branding-ubuntu/* /usr/share/cockpit/branding/ubuntu/
 	@$(SUDO) cp -rf ui/static/* /usr/share/cockpit/static/	
 	@$(SUDO) cp -rf ui/base1/* /usr/share/cockpit/base1/
@@ -56,6 +60,7 @@ cockpit:
 
 disable:
 	@( for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true )
+	@$(SUDO) nmcli con down attcell ; $(SUDO) nmcli con delete "attcell"
 
 enable:
 	@echo "Installing service files..."
@@ -113,6 +118,10 @@ install: dependencies
 # install services and enable them
 	@$(MAKE) --no-print-directory enable
 
+# install cellular
+	@echo "Setting up cellular connection..."
+	@$(MAKE) --no-print-directory cellular
+
 # cleanup and final settings
 	@echo "Final cleanup..."
 	@$(SUDO) chown -R echopilot /usr/local/echopilot
@@ -128,6 +137,8 @@ see:
 #   mavnet conf not applicable yet
 #	$(SUDO) cat $(SYSCFG)/mavnet.conf
 	$(SUDO) cat $(SYSCFG)/video.conf
+	@echo -n "Cellular APN is: "
+	@$(SUDO) nmcli con show attcell | grep gsm.apn | cut -d ":" -f2 | xargs
 
 
 uninstall:

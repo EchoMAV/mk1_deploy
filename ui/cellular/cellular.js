@@ -51,8 +51,10 @@ function EnableButtonClicked() {
 }
 
 function SaveSettings() {
-
     cockpit.script(scriptLocation + "cockpitScript.sh -a " + apn.value);
+    result.style.color = "green";
+    result.innerHTML = "Success, restarting cellular...";
+    setTimeout(() => result.innerHTML = "", 4000);
 }
 
 function Success() {
