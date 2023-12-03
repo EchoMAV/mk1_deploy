@@ -1,5 +1,5 @@
-const scriptLocation = "/usr/local/h31/scripts/"
-const confLocation = "/usr/local/h31/conf/"
+const scriptLocation = "/usr/local/echopilot/scripts/"
+const confLocation = "/usr/local/echopilot/mavnetProxy/"
 const apn = document.getElementById("apn");
 const CONFIG_LENGTH = 1;
 

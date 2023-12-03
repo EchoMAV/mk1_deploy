@@ -3,7 +3,7 @@
 
     "menu": {
         "mav-server": {
-            "label": "MAVNet Server Configuration",
+            "label": "Server Configuration",
             "path": "server.html",
             "order": 2
         }

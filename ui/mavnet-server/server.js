@@ -1,4 +1,4 @@
-const confLocation = "/usr/local/h31/conf/"
+const confLocation = "/usr/local/echopilot/mavnetProxy/"
 const serialNum = document.getElementById("serialNum");
 const deviceTok = document.getElementById("deviceTok");
 const serverUrl = document.getElementById("serverUrl");
@@ -17,12 +17,25 @@ function InitPage() {
 
 function SuccessReadFile(content) {
     try{
+
+        var lines = content.split('\n');
+        var myConfig = {};
+        for(var line = 0; line < lines.length; line++){
+            
+            if (lines[line].trim().startsWith("#") === false)  //check if this line in the config file is not commented out
+            {
+                var currentline = lines[line].split('=');
+                
+                if (currentline.length === 2)            
+                    myConfig[currentline[0].trim().replace(/["]/g, "")] = currentline[1].trim().replace(/["]/g, "");  
+            }          
+        }       
         var splitResult = content.split("\n");
         
         if(splitResult.length >= CONFIG_LENGTH) {
-            serialNum.value = splitResult[1].split("=")[1];
-            deviceTok.value = splitResult[2].split("=")[1];
-            serverUrl.value = splitResult[3].split("=")[1];
+            serverUrl.value = myConfig.SERVER_ADDRESS;
+            deviceTok.value = myConfig.DEVICE_TOKEN;
+            serialNum.value = myConfig.SERIAL_NUMBER;
         }
         else{
             FailureReadFile(new Error("To few parameters in file"));
@@ -40,25 +53,27 @@ function FailureReadFile(error) {
     // Defaults
     serialNum.value = "123456789";
     deviceTok.value = "";
-    serverUrl.value = "https://gcs.horizon31.com";
+    serverUrl.value = "https://gcs.echomav.com";
 
 }
 
 function SaveSettings() {
 
     cockpit.file(confLocation + "mavnet.conf").replace("[Service]\n" + 
-        "SERIAL_NUMBER=" + serialNum.value + "\n" +
-        "DEVICE_TOKEN=" + deviceTok.value + "\n" +
-        "SERVER_ADDRESS=" + serverUrl.value + "\n")
+    "SERVER_ADDRESS=" + serverUrl.value + "\n" +   
+    "SERIAL_NUMBER=" + serialNum.value + "\n" +
+    "DEVICE_TOKEN=" + deviceTok.value + "\n")
+        
         .then(Success)
         .catch(Fail);
 
-    cockpit.spawn(["systemctl", "restart", "h31proxy"]);
+    cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);
 }
 
 function Success() {
     result.style.color = "green";
-    result.innerHTML = "success";
+    result.innerHTML = "Success, restarting Telemetry Services...";
+    setTimeout(() => result.innerHTML = "", 4000);
 }
 
 function Fail() {

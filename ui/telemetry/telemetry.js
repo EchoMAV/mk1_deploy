@@ -32,7 +32,13 @@ function InitPage() {
             .catch(error => FailureReadFile(error));
     cockpit.script(scriptLocation + "cockpitScript.sh -v")
     .then((content) => version.innerHTML=content)
-    .catch(error => Fail("script -v", error));      
+    .catch(error => Fail("script -v", error));    
+    
+    cockpit.script(scriptLocation + "cockpitScript.sh -u")
+    .then(function(content) {
+        ipsubnet1.innerHTML=content;        
+    })
+    .catch(error => Fail(error));  
 }
 
 function SuccessReadFile(content) {
