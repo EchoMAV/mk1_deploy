@@ -1,4 +1,4 @@
-# Automation boilerplate
+	# Automation boilerplate
 
 SHELL := /bin/bash
 SN := $(shell hostname)
@@ -16,7 +16,7 @@ SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
 
-.PHONY = clean dependencies enable install provision see uninstall 
+.PHONY = clean dependencies cockpit enable install provision see uninstall 
 
 default:
 	@echo "Please choose an action:"
@@ -32,6 +32,27 @@ clean:
 
 dependencies:	
 	@if [ ! -z "$(PKGDEPS)" ] ; then $(SUDO) apt-get install -y $(PKGDEPS) ; fi
+
+cockpit:
+	@$(SUDO) ./ensure-cockpit.sh
+
+	@for s in $(LOCAL_SCRIPTS) ; do $(SUDO) install -Dm755 $${s} $(LOCAL)/echopilot/$${s} ; done
+
+# set up cockpit files
+	@echo "Copying cockpit files..."
+	@$(SUDO) rm -rf /usr/share/cockpit/mavnet/ /usr/share/cockpit/mavnet-server/ /usr/share/cockpit/video/ /usr/share/cockpit/cellular
+	@$(SUDO) mkdir /usr/share/cockpit/mavnet/
+	@$(SUDO) cp -rf ui/telemetry/* /usr/share/cockpit/telemetry/
+	@$(SUDO) mkdir /usr/share/cockpit/mavnet-server/
+	@$(SUDO) cp -rf ui/mavnet-server/* /usr/share/cockpit/mavnet-server/
+	@$(SUDO) mkdir /usr/share/cockpit/video/
+	@$(SUDO) cp -rf ui/video/* /usr/share/cockpit/video/
+	@$(SUDO) mkdir /usr/share/cockpit/cellular
+	@$(SUDO) cp -rf ui/cellular/* /usr/share/cockpit/cellular/
+	@$(SUDO) cp -rf ui/branding-ubuntu/* /usr/share/cockpit/branding/ubuntu/
+	@$(SUDO) cp -rf ui/static/* /usr/share/cockpit/static/	
+	@$(SUDO) cp -rf ui/base1/* /usr/share/cockpit/base1/
+	@$(SUDO) install -Dm755 version.txt $(LOCAL)/echopilot/.	
 
 disable:
 	@( for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true )
@@ -58,22 +79,7 @@ install: dependencies
 	@PLATFORM=$(PLATFORM) ./ensure-gstd.sh $(DRY_RUN)	
 
 # install cockpit
-	@$(SUDO) ./ensure-cockpit.sh
-
-# set up cockpit files
-	@$(SUDO) rm -rf /usr/share/cockpit/mavnet/ /usr/share/cockpit/mavnet-server/ /usr/share/cockpit/video/ /usr/share/cockpit/cellular
-	@$(SUDO) mkdir /usr/share/cockpit/mavnet/
-	@$(SUDO) cp -rf ui/mavnet/* /usr/share/cockpit/mavnet/
-	@$(SUDO) mkdir /usr/share/cockpit/mavnet-server/
-	@$(SUDO) cp -rf ui/mavnet-server/* /usr/share/cockpit/mavnet-server/
-	@$(SUDO) mkdir /usr/share/cockpit/video/
-	@$(SUDO) cp -rf ui/video/* /usr/share/cockpit/video/
-	@$(SUDO) mkdir /usr/share/cockpit/cellular
-	@$(SUDO) cp -rf ui/cellular/* /usr/share/cockpit/cellular/
-	@$(SUDO) cp -rf ui/branding-ubuntu/* /usr/share/cockpit/branding/ubuntu/
-	@$(SUDO) cp -rf ui/static/* /usr/share/cockpit/static/	
-	@$(SUDO) cp -rf ui/base1/* /usr/share/cockpit/base1/
-	@$(SUDO) install -Dm755 version.txt $(LOCAL)/echopilot/.	
+	@$(MAKE) --no-print-directory cockpit
 
 # set up folders used by mavnetProxy
 	@echo "Setting up mavnetProxy folders..."

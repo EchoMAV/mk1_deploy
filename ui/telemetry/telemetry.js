@@ -1,12 +1,10 @@
-const scriptLocation = "/usr/local/h31/scripts/"
-const confLocation = "/usr/local/h31/conf/"
+const scriptLocation = "/usr/local/echopilot/scripts/"
+const confLocation = "/usr/local/echopilot/mavnetProxy/"
 const version = document.getElementById("version");
+const file_location = document.getElementById("file_location");
 const losHost = document.getElementById("losHost");
 const losPort = document.getElementById("losPort");
 const losIface = document.getElementById("losIface");
-const backupHost = document.getElementById("backupHost");
-const backupPort = document.getElementById("backupPort");
-const backupIface = document.getElementById("backupIface");
 const fmuDevice = document.getElementById("fmuDevice");
 const baudrate = document.getElementById("baudrate");
 const fmuId = document.getElementById("fmuId");
@@ -19,59 +17,63 @@ const baudRateArray = [ 38400, 57600, 115200, 230400, 460800, 500000, 921600 ];
 enabled = true;
 // Runs the initPage when the document is loaded
 document.onload = InitPage();
-// Enable button
-document.getElementById("enable").addEventListener("click", EnableButtonClicked);
+
 // Save file button
 document.getElementById("save").addEventListener("click", SaveSettings);
 
 // This attempts to read the conf file, if it exists, then it will parse it and fill out the table
 // if it fails then the values are loaded with defaults.
 function InitPage() {
-    cockpit.file(confLocation + "h31proxy.conf")
+
+    file_location.innerHTML = confLocation + "mavnetProxy.conf";
+
+    cockpit.file(confLocation + "mavnetProxy.conf")
         .read().then((content, tag) => SuccessReadFile(content))
             .catch(error => FailureReadFile(error));
     cockpit.script(scriptLocation + "cockpitScript.sh -v")
     .then((content) => version.innerHTML=content)
-    .catch(error => Fail(error));      
+    .catch(error => Fail("script -v", error));      
 }
 
 function SuccessReadFile(content) {
     try{
-        var splitResult = content.split("\n");
-        
-        if(splitResult.length >= CONFIG_LENGTH) {
-            cockpit.script(scriptLocation + "cockpitScript.sh -s")
-                .then((content) => AddDropDown(fmuDevice, AddPathToDeviceFile(content.split("\n")), splitResult[1].split("=")[1]))
-                .catch(error => Fail(error));
-            AddDropDown(baudrate, baudRateArray, splitResult[2].split("=")[1]);
-            fmuId.value = splitResult[3].split("=")[1];
-            losHost.value = splitResult[4].split("=")[1];
-            losPort.value = splitResult[5].split("=")[1];
+  
+        var lines = content.split('\n');
+        var myConfig = {};
+        for(var line = 0; line < lines.length; line++){
+            
+            if (lines[line].trim().startsWith("#") === false)  //check if this line in the config file is not commented out
+            {
+                var currentline = lines[line].split('=');
+                
+                if (currentline.length === 2)            
+                    myConfig[currentline[0].trim().replace(/["]/g, "")] = currentline[1].trim().replace(/["]/g, "");  
+            }          
+        }        
+               
+        //console.log("success reading file " + myConfig.FMU_SERIAL);
+        if(myConfig.TELEM_LOS != "") {
+            cockpit.script(scriptLocation + "cockpitScript.sh -s")                
+                .then((content) => AddDropDown(fmuDevice, content.trim().split("\n"), myConfig.FMU_SERIAL)) 
+                .catch(error => Fail("Get Serial", error));
+            AddDropDown(baudrate, baudRateArray, myConfig.FMU_BAUDRATE);
+            fmuId.value = myConfig.FMU_SYSID
+            losHost.value = myConfig.TELEM_LOS.split(",")[1].split(":")[0];
+            losPort.value = myConfig.TELEM_LOS.split(",")[1].split(":")[1];
             cockpit.script(scriptLocation + "cockpitScript.sh -i")
-                .then((content) => AddDropDown(losIface, content.split("\n"), splitResult[6].split("=")[1]))
-                .catch(error => Fail(error));
-            backupHost.value = splitResult[7].split("=")[1];
-            backupPort.value = splitResult[8].split("=")[1];
-            cockpit.script(scriptLocation + "cockpitScript.sh -i")
-                .then((content) => AddDropDown(backupIface, content.split("\n"), splitResult[9].split("=")[1]))
-                .catch(error => Fail(error));        
-            atakHost.value = splitResult[10].split("=")[1];
-            atakPort.value = splitResult[11].split("=")[1];
-            enabled = (splitResult[12].split("=")[1] == "true");
+                .then((content) => AddDropDown(losIface, content.trim().split("\n"), myConfig.TELEM_LOS.split(",")[0]))
+                .catch(error => Fail("2", error));      
+            atakHost.value = myConfig.ATAK_HOST;
+            atakPort.value = myConfig.ATAK_PORT;
         }
         else{
-            FailureReadFile(new Error("To few parameters in file"));
+            FailureReadFile(new Error("Too few parameters in file"));
         }
     }
     catch(e){
         FailureReadFile(e);
     }
-    // This checks to see if the service is enabled, if it is
-    // then we show the rest of the table
-    if(enabled == true){
-        document.getElementById("enable").innerHTML = "Disable";
-        document.getElementById("the-table").hidden = false;
-    }
+
 }
 
 function AddPathToDeviceFile(incomingArray){
@@ -93,22 +95,18 @@ function AddDropDown(box, theArray, defaultValue){
         }
     }
     catch(e){
-        Fail(e)
+        Fail("Dropdown", e)
     }
 }
 
 function FailureReadFile(error) {
     // Display error message
     output.innerHTML = "Error : " + error.message;
-    // TODO :: Defaults should go here.
-
-    losHost.value = "224.10.10.10";
+    losHost.value = "172.20.1.1";
     losPort.value = "14550";
-    backupHost.value = "225.10.10.10";
-    backupPort.value = "14560";
     fmuId.value = "1";
     atakHost.value = "239.2.3.1";
-    atakPort.value = "6969";    
+    atakPort.value = "6969";       
 }
 
 // The callback on the enable button
@@ -122,11 +120,10 @@ function EnableButtonClicked() {
 }
 
 // If we are enabling the service (either for the first time or not)
+//not currently used
 function EnableService(){
     enabled = true;
-    document.getElementById("enable").innerHTML = "Disable";
-    document.getElementById("the-table").hidden = false;
-
+    
     var fileString = "[Service]\n" + 
         "FMU_SERIAL=" + fmuDevice.value + "\n" +
         "FMU_BAUDRATE=" + baudrate.value + "\n" +
@@ -134,14 +131,11 @@ function EnableService(){
         "LOS_HOST=" + losHost.value + "\n" +
         "LOS_PORT=" + losPort.value + "\n" +
         "LOS_IFACE=" + losIface.value + "\n" +
-        "BACKUP_HOST=" + backupHost.value + "\n" +
-        "BACKUP_PORT=" + backupPort.value + "\n" +
-        "BACKUP_IFACE=" + backupIface.value + "\n" +
         "ATAK_HOST=" + atakHost.value + "\n" +
         "ATAK_PORT=" + atakPort.value + "\n" +
         "ENABLED=" + enabled.toString() + "\n";
 
-    cockpit.file(confLocation + "h31proxy.conf").replace(fileString)
+    cockpit.file(confLocation + "mavnetProxy.conf").replace(fileString)
         .then(CreateSystemDService).catch(error => {output.innerHTML = error.message});
 }
 
@@ -155,10 +149,10 @@ function CreateSystemDService(){
 // When disable is pressed we need to re write the conf file to 
 // make sure the enabled feature is false and also remove
 // the service files so they will not start up again
+// not currently used
 function DisableService(){
     enabled = false;
-    document.getElementById("enable").innerHTML = "Enable";
-    document.getElementById("the-table").hidden = true;
+    
 
     var fileString = "[Service]\n" + 
         "FMU_SERIAL=" + fmuDevice.value + "\n" +
@@ -167,9 +161,9 @@ function DisableService(){
         "LOS_HOST=" + losHost.value + "\n" +
         "LOS_PORT=" + losPort.value + "\n" +
         "LOS_IFACE=" + losIface.value + "\n" +
-        "BACKUP_HOST=" + backupHost.value + "\n" +
-        "BACKUP_PORT=" + backupPort.value + "\n" +
-        "BACKUP_IFACE=" + backupIface.value + "\n" +
+        //"BACKUP_HOST=" + backupHost.value + "\n" +
+        //"BACKUP_PORT=" + backupPort.value + "\n" +
+        //"BACKUP_IFACE=" + backupIface.value + "\n" +
         "ATAK_HOST=" + atakHost.value + "\n" +
         "ATAK_PORT=" + atakPort.value + "\n" +
         "ENABLED=" + enabled.toString() + "\n";
@@ -188,35 +182,55 @@ function RemoveSystemLinks(){
 }
 
 function SaveSettings() {
-    var fileString = "[Service]\n" + 
-        "FMU_SERIAL=" + fmuDevice.value + "\n" +
-        "FMU_BAUDRATE=" + baudrate.value + "\n" +
-        "FMU_SYSID=" + fmuId.value + "\n" +
-        "LOS_HOST=" + losHost.value + "\n" +
-        "LOS_PORT=" + losPort.value + "\n" +
-        "LOS_IFACE=" + losIface.value + "\n" +
-        "BACKUP_HOST=" + backupHost.value + "\n" +
-        "BACKUP_PORT=" + backupPort.value + "\n" +
-        "BACKUP_IFACE=" + backupIface.value + "\n" +      
-        "ATAK_HOST=" + atakHost.value + "\n" +
-        "ATAK_PORT=" + atakPort.value + "\n" +
-        "ENABLED=" + enabled.toString() + "\n";
+   //lets do some validation
+        
+   var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+   var portformat = /^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/;
+   var errorFlag = false;
+   var errorText = "";
+   if (!losHost.value.match(ipformat)) {
+       losHost.focus();
+       errorText += "Error in the Host Address!<br>";
+       errorFlag = true;
+   }
+   if (!losPort.value.match(portformat)) {
+       losPort.focus();
+       errorText += "Error in the Port Number! (0-65535 allowed)<br>";
+       errorFlag = true;
+   }
+   
+   if (errorFlag)
+   {
+       result.style.color = "red";
+       result.innerHTML = errorText;
+       return;
+   }
 
-    cockpit.file(confLocation + "h31proxy.conf").replace(fileString)
-        .then(Success)
-        .catch(Fail);
+   var fileString = 
+       "TELEM_LOS=" + losIface.value + ","+ losHost.value + ":" + losPort.value + "\n" +
+       "FMU_SERIAL=" + fmuDevice.value + "\n" +
+       "FMU_BAUDRATE=" + baudrate.value + "\n" +
+       "FMU_SYSID=" + fmuId.value + "\n" +        
+       "ATAK_HOST=" + atakHost.value + "\n" +
+       "ATAK_PORT=" + atakPort.value + "\n";       
 
-    cockpit.spawn(["systemctl", "restart", "h31proxy"]);
+   cockpit.file(confLocation + "mavnetProxy.conf", { superuser : "try" }).replace(fileString)
+       .then(Success)
+       .catch(Fail);
+ 
+   //cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);   
 }
 
 function Success() {
     result.style.color = "green";
-    result.innerHTML = "success";
+    result.innerHTML = "Success, restarting Telemetry Services...";
+    setTimeout(() => result.innerHTML = "", 4000);
 }
 
-function Fail(error) {
+function Fail(source, error) {
     result.style.color = "red";
     result.innerHTML = error.message;
+    console.log(source + ": " + error.message);
 }
 // Send a 'init' message.  This tells integration tests that we are ready to go
 cockpit.transport.wait(function() { });
