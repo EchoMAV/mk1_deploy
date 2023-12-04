@@ -1,0 +1,1 @@
+cmd_/home/echopilot/mk1_deploy/sw_driver/modules.order := {   echo /home/echopilot/mk1_deploy/sw_driver/qcserial.ko;   echo /home/echopilot/mk1_deploy/sw_driver/usb_wwan.ko;   echo /home/echopilot/mk1_deploy/sw_driver/qmi_wwan.ko; :; } | awk '!x[$$0]++' - > /home/echopilot/mk1_deploy/sw_driver/modules.order

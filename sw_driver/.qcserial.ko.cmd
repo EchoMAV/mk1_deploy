@@ -1,0 +1,1 @@
+cmd_/home/echopilot/mk1_deploy/sw_driver/qcserial.ko := ld -r  -m elf_x86_64 -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /home/echopilot/mk1_deploy/sw_driver/qcserial.ko /home/echopilot/mk1_deploy/sw_driver/qcserial.o /home/echopilot/mk1_deploy/sw_driver/qcserial.mod.o;  true

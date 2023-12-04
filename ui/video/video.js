@@ -25,8 +25,8 @@ function InitPage() {
 
     cockpit.script(scriptLocation + "cockpitScript.sh -z")
     .then(function(content) {
-        myIP.innerHTML=content;   
-        myIP2.innerHTML=content;     
+        myIP.innerHTML=content.trim();   
+        myIP2.innerHTML=content.trim();     
     })
     .catch(error => Fail(error));  
 }

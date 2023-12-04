@@ -15,6 +15,7 @@ SERVICES=mavnetProxy.service temperature.service video.service
 SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
+SW_LOCATION=sw_driver
 
 .PHONY = clean dependencies cockpit cellular enable install provision see uninstall 
 
@@ -34,7 +35,9 @@ dependencies:
 	@if [ ! -z "$(PKGDEPS)" ] ; then $(SUDO) apt-get install -y $(PKGDEPS) ; fi
 
 cellular:
-# remove --defaults if you want interactive, otherwise it'll use the default ATT Broadband
+# install sierra wireless USB driver. This is not strictly neccesary but may be required if all the interfaces are needed (DM, NMEA, AT), should show up as /dev/ttuUSB0, 1, 2
+	@if [ -d "$(SW_LOCATION)" ] ; then echo "" && echo "Installing Sierra Wireless Driver..." && echo "" && cd $(SW_LOCATION) && make && make install ; fi		
+# run script which sets up nmcli "attcell" connection. Remove --defaults if you want it to be interactive, otherwise it'll use the default ATT APN: Broadband
 	@$(SUDO) ./ensure-cellular.sh --defaults
 
 cockpit:
