@@ -30,7 +30,9 @@ echo "Enter the network provisioning information below...";
 
 IFACE="eth0"
 IP_INPUT=$(interactive "172.20.1.4/24" "IPv4 Address with Netmask")
-GATEWAY=$(interactive "172.20.100.100" "IPv4 Gateway")
+# GATEWAY=$(interactive "172.20.100.100" "IPv4 Gateway")
+# no gateway for now, as we want the cellular to provide gateway 
+GATEWAY=""
 
 # validate ip address
 if [[ ! $IP_INPUT =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,3}$ ]]; then

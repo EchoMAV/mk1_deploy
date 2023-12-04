@@ -18,8 +18,8 @@ fi
 VIDEOSERVER_BITRATE=$(($VIDEOSERVER_BITRATE * 1000)) 
 
 # ensure previous pipelines are cancelled and cleared
-gstd -k
-gstd -e
+#gstd -k
+gstd -e -f /var/run
 
 # video pipelines
 
