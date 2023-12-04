@@ -59,8 +59,8 @@ cockpit:
 
 # set up cockpit files
 	@echo "Copying cockpit files..."
-	@$(SUDO) rm -rf /usr/share/cockpit/mavnet/ /usr/share/cockpit/mavnet-server/ /usr/share/cockpit/video/ /usr/share/cockpit/cellular
-	@$(SUDO) mkdir /usr/share/cockpit/mavnet/
+	@$(SUDO) rm -rf /usr/share/cockpit/telemetry/ /usr/share/cockpit/mavnet-server/ /usr/share/cockpit/video/ /usr/share/cockpit/cellular
+	@$(SUDO) mkdir /usr/share/cockpit/telemetry/
 	@$(SUDO) cp -rf ui/telemetry/* /usr/share/cockpit/telemetry/
 	@$(SUDO) mkdir /usr/share/cockpit/mavnet-server/
 	@$(SUDO) cp -rf ui/mavnet-server/* /usr/share/cockpit/mavnet-server/
