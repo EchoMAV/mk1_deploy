@@ -29,7 +29,7 @@ SUDO=$(test ${EUID} -ne 0 && which sudo)
 echo "Enter the network provisioning information below...";
 
 IFACE="eth0"
-IP_INPUT=$(interactive "172.20.1.1/16" "IPv4 Address with Netmask")
+IP_INPUT=$(interactive "172.20.1.4/24" "IPv4 Address with Netmask")
 GATEWAY=$(interactive "172.20.100.100" "IPv4 Gateway")
 
 # validate ip address
