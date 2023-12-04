@@ -80,6 +80,7 @@ $SUDO nmcli c mod "static-$IFACE" +ipv4.addresses "$BACKDOOR_ADDR"
 $SUDO nmcli c up "static-$IFACE"
 
 # change hostname
+echo "Setting hostname to EchoMAV-MK1...";
 echo "EchoMAV-MK1" > /tmp/$$.hostname
 $SUDO install -Dm644 /tmp/$$.hostname /etc/hostname
 $SUDO hostname $SN
