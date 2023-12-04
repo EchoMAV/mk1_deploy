@@ -20,7 +20,7 @@ trap 'trap " " SIGINT SIGTERM SIGHUP; kill 0; wait; sigterm_handler' SIGINT SIGT
 
 SUDO=$(test ${EUID} -ne 0 && which sudo)
 
-function print_help { echo "Usage: ./setup-network.sh -i interface_name -a ip_addres|auto -g gateway_address(optional)" >&2 ; }
+function print_help { echo "Usage: ./setup-network.sh -i interface_name -a ip_addres|auto|dhcp -g gateway_address(optional)" >&2 ; }
 
 # process args
 while getopts :i:a:g:h: flag;
@@ -84,6 +84,7 @@ elif [ $IP_INPUT = "dhcp" ]; then
   #if static-iface exists, then mod to dhcp
   exist=$(nmcli c show "static-$IFACE" 2>/dev/null)  
   if [ ! -z "$exist" ] ; then     # delete the interface if it exists
+        $SUDO nmcli con mod "static-$IFACE" ipv4.address ""
         $SUDO nmcli con mod "static-$IFACE" ipv4.method auto
         $SUDO nmcli con down "static-$IFACE"
         $SUDO nmcli con up "static-$IFACE"
