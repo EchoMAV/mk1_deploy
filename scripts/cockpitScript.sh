@@ -44,7 +44,7 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         -z)
-            hostname -I | xargs
+            hostname -I | cut -d' ' -f1 | xargs
             exit 0
             ;;
     esac
