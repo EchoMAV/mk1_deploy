@@ -24,8 +24,11 @@ default:
 	@echo ""
 	@echo "  dependencies: ensure all needed software is installed (requires internet)"
 	@echo "  install: update programs and system scripts"
+	@echo "  cockpit: installs and updates only cockpit"
+	@echo "  cellular: installs and updates only cellular"
+	@echo "  see: shows the provisioning information for this system"
+	@echo "  uninstall: disables and removes services and files"
 	@echo ""
-	@echo "The above are issued in the order shown above.  dependencies is only done once."
 	@echo ""
 
 clean:
@@ -109,7 +112,7 @@ install: dependencies
 
 # stop and disable services
 	@echo "Disabling running services..."
-	@for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true
+	-@for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true
 
 # install mavnetProxy files
 	@echo "Installing mavnetProxy files..."
@@ -128,12 +131,12 @@ install: dependencies
 # cleanup and final settings
 	@echo "Final cleanup..."
 	@$(SUDO) chown -R echopilot /usr/local/echopilot
-	@$(SUDO) systemctl stop nvgetty
-	@$(SUDO) systemctl disable nvgetty
+	@$(SUDO) systemctl stop nvgetty &>/dev/null || true
+	@$(SUDO) systemctl disable nvgetty &>/dev/null || true
 	@$(SUDO) usermod -aG dialout echopilot
 	@$(SUDO) usermod -aG tty echopilot
 	@echo "Please access the web UI to change settings..."
-	@echo "Please reboot to complete the installation..."
+	@echo "Please reboot now to complete the installation..."
 
 see:
 	$(SUDO) cat $(SYSCFG)/mavnetProxy.conf
