@@ -83,7 +83,7 @@ $SUDO nmcli c up "static-$IFACE"
 echo "Setting hostname to EchoMAV-MK1...";
 echo "EchoMAV-MK1" > /tmp/$$.hostname
 $SUDO install -Dm644 /tmp/$$.hostname /etc/hostname
-$SUDO hostname $SN
+$SUDO hostname "EchoMAV-MK1"
 
 echo "";
 echo "Static Ethernet Configuration Successful! Interface $IFACE is set to $HOST/$NETMASK"
