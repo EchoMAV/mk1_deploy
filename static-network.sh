@@ -79,6 +79,11 @@ $SUDO nmcli c mod "static-$IFACE" +ipv4.addresses "$BACKDOOR_ADDR"
 # bring up the interface
 $SUDO nmcli c up "static-$IFACE"
 
+# change hostname
+echo "EchoMAV-MK1" > /tmp/$$.hostname
+$SUDO install -Dm644 /tmp/$$.hostname /etc/hostname
+$SUDO hostname $SN
+
 echo "";
 echo "Static Ethernet Configuration Successful! Interface $IFACE is set to $HOST/$NETMASK"
 echo ""
