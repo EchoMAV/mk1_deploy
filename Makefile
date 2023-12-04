@@ -1,4 +1,8 @@
-	# Automation boilerplate
+# MK1 Deploy Makefile
+# EchoMAV, LLC
+# bstinson@echomav.com
+# Standard install is make install (requires internet)
+# Run make installed while the device has internet. At the end of the configuration, an interactive session will let you set up at static IP address
 
 SHELL := /bin/bash
 SN := $(shell hostname)
@@ -17,15 +21,16 @@ DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
 SW_LOCATION=sw_driver
 
-.PHONY = clean dependencies cockpit cellular enable install provision see uninstall 
+.PHONY = clean dependencies cockpit cellular network enable install provision see uninstall 
 
 default:
 	@echo "Please choose an action:"
 	@echo ""
+	@echo "  install: installs programs and system scripts (requires internet)"
 	@echo "  dependencies: ensure all needed software is installed (requires internet)"
-	@echo "  install: update programs and system scripts"
-	@echo "  cockpit: installs and updates only cockpit"
+	@echo "  cockpit: installs and updates only cockpit (requires internet)"
 	@echo "  cellular: installs and updates only cellular"
+	@echo "  network: sets up only the network"
 	@echo "  see: shows the provisioning information for this system"
 	@echo "  uninstall: disables and removes services and files"
 	@echo ""
@@ -42,6 +47,10 @@ cellular:
 	@if [ -d "$(SW_LOCATION)" ] ; then echo "" && echo "Installing Sierra Wireless Driver..." && echo "" && cd $(SW_LOCATION) && make && make install ; fi		
 # run script which sets up nmcli "attcell" connection. Remove --defaults if you want it to be interactive, otherwise it'll use the default ATT APN: Broadband
 	@$(SUDO) ./ensure-cellular.sh --defaults
+
+network:
+# start an interactive session to configure the network
+	@$(SUDO) ./static-network.sh
 
 cockpit:
 	@$(SUDO) ./ensure-cockpit.sh
@@ -127,6 +136,10 @@ install: dependencies
 # install cellular
 	@echo "Setting up cellular connection..."
 	@$(MAKE) --no-print-directory cellular
+
+# provision the network
+	@echo "Starting interactive session to set up the network..."
+	@$(MAKE) --no-print-directory network
 
 # cleanup and final settings
 	@echo "Final cleanup..."
