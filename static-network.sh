@@ -81,6 +81,10 @@ $SUDO nmcli c mod "static-$IFACE" +ipv4.addresses "$BACKDOOR_ADDR"
 # bring up the interface
 $SUDO nmcli c up "static-$IFACE"
 
+# Set mcast routes
+$SUDO nmcli con mod "static-$IFACE" +ipv4.routes "224.0.0.0/8"
+$SUDO nmcli con mod "static-$IFACE" +ipv4.routes "239.0.0.0/8"
+
 # change hostname
 echo "Setting hostname to EchoMAV-MK1...";
 echo "EchoMAV-MK1" > /tmp/$$.hostname
