@@ -18,14 +18,16 @@ fi
 VIDEOSERVER_BITRATE=$(($VIDEOSERVER_BITRATE * 1000)) 
 
 # ensure previous pipelines are cancelled and cleared
-#gstd -k
-gstd -e -f /var/run
+set +e
+gstd -f /var/run -l /dev/null -d /dev/null -k
+set -e
+gstd -e -f /var/run -l /var/run/video-stream/gstd.log -d /var/run/video-stream/gst.log
 
 # video pipelines
 
 gst-client pipeline_create h265src udpsrc port=${GIMBAL_PORT} ! "application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H265, payload=(int)96" ! rtph265depay ! interpipesink name=h265src
 # gst-client pipeline_create los interpipesrc listen-to=h265src block=true is-live=true allow-renegotiation=true stream-sync=compensate-ts ! rtph265pay config-interval=1 pt=96 ! udpsink sync=false host=${LOS_HOST} port=${LOS_PORT} ${extra_los}
-gst-client pipeline_create server interpipesrc listen-to=h265src block=false is-live=true allow-renegotiation=true stream-sync=compensate-ts ! queue ! h265parse ! nvv4l2decoder enable-max-performance=true disable-dpb=true ! queue ! nvv4l2h264enc idrinterval=30 control-rate=1 bitrate=${VIDEOSERVER_BITRATE} preset-level=1 ! h264parse ! flvmux streamable=true ! rtmpsink location=rtmp://${VIDEOSERVER_HOST}:${VIDEOSERVER_PORT}/live/${VIDEOSERVER_STREAMNAME}	
+gst-client pipeline_create server interpipesrc listen-to=h265src block=false is-live=true allow-renegotiation=true stream-sync=compensate-ts ! queue ! h265parse ! nvv4l2decoder enable-max-performance=true disable-dpb=true ! queue ! nvv4l2h264enc idrinterval=30 control-rate=1 bitrate=${VIDEOSERVER_BITRATE} preset-level=1 name=serverEncoder ! h264parse ! flvmux streamable=true ! rtmpsink location=rtmp://${VIDEOSERVER_HOST}:${VIDEOSERVER_PORT}/live/${VIDEOSERVER_STREAMNAME}	
 # nb: the server pipeline should be started by a supervisory program (like mavnetproxy) when we know we have connectivity. it is started with gst-client pipeline_play server
 
 # snapshot pipeline
