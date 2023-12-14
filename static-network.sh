@@ -76,6 +76,9 @@ fi
 # add backdoor ip address
 $SUDO nmcli c mod "static-$IFACE" +ipv4.addresses "$BACKDOOR_ADDR"
 
+# disable ipv6
+$SUDO nmcli c mod "static-$IFACE" ipv6.method "disabled"
+
 # bring up the interface
 $SUDO nmcli c up "static-$IFACE"
 
