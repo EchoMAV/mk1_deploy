@@ -120,8 +120,12 @@ function SaveSettings() {
         .then(Success)
         .catch(error => Fail(new Error("Failure, settings NOT changed!")));
 
-    cockpit.spawn(["systemctl", "restart", "video"]);
-    cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);
+    //rather than restarting video service, dynamically change settings
+    var scaledBitrate = bitRate * 1000;
+    console.log("Scaled bitrate is " + scaledBitrate);
+    cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", scaledBitrate]);
+    //cockpit.spawn(["systemctl", "restart", "video"]);
+    //cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);
 }
 
 function Success() {

@@ -17,18 +17,7 @@
                    
                     <div class="col-lg-12 ms-3"><p class="mt-1 me-3">Use the settings below to change the video streaming settings. To disable the stream, set the Bitrate to "Disabled".</p></div>
                     <div class="col-lg-12 ms-3"><p class="mt-1 me-3">The MK1 in this configuration is designed to be used with a Raptor gimbal + TRIP6 module set up with TRIP6 firmware v.1.11.10+.  On the TRIP6 configuration, one of the two configured streams <strong>must be</strong> pointing to this IP address (<strong><span id='myIP'></span></strong>) and using the port defined below.</p></div>
-                    <div class="col-lg-12 ms-3"><p class="mt-1 me-3">The TRIP6 Settings must match those below:</p>
-                        <ul>
-                            <li>Channel-0 Settings > Video > Encapsulation Format = <strong>RTP/AVP</strong></li>
-                            <li>Channel-0 Settings > Video > Destination IP = <strong>The endpoint of the primary local GCS</strong></li>
-                            <li>Channel-0 Settings > Video > Destination Port = <strong>The port used by the GCS to receive video, typically 5600</strong></li>
-                            <li>Channel-0 Settings > Video > 2nd Stream Enable = <strong>Checked/True</strong></li>
-                            <li>Channel-0 Settings > Video > 2nd Stream Destination IP = <strong>The IP address of this EchoPilot AI device, <strong><span id='myIP2'></span></strong>.</li>
-                            <li>Channel-0 Settings > Video > 2nd Stream Destination Port = <strong>The port you wish to receive video on with this app, must match the setting below. The default value is 7000.</strong></li>
-                            <li>Channel-0 Settings > Encoder Settings > Stream Bitrate = <strong>~2000 [kbps]</strong></li>
-                        </ul>
-                    </div>
-
+                   
                     
                 <div class="row justify-content-start">
                     <div class="col ms-3"><p class="fw-bold fs-5 mt-3 mb-0"><img src="settings_ethernet.svg" class="me-2">TRIP6 Stream Setup</p><p class="fw-light fs-6">Input the port used to received video from the TRIP6 system onboard the MK1. This should match the Channel-0-Settings > Video > 2nd Stream Destination Port on the TRIP6 configuration page. Default value is 7000.</p></div>   
@@ -66,6 +55,19 @@
                 <div class="row justify-content-start">
                     <div class="col-2 ms-3 mt-3"><button class="btn-primary" id="save">Save/Update</button></div>
                     <div class="col mt-3"><span id="result"></span></div>
+                </div>
+
+                <div class="alert alert-info" role="alert">
+                   <p class="mt-1 me-3">The TRIP6 Settings must match those below:</p>
+                        <ul>
+                            <li>Channel-0 Settings > Video > Encapsulation Format = <strong>RTP/AVP</strong></li>
+                            <li>Channel-0 Settings > Video > Destination IP = <strong>The endpoint of the primary local GCS</strong></li>
+                            <li>Channel-0 Settings > Video > Destination Port = <strong>The port used by the GCS to receive video, typically 5600</strong></li>
+                            <li>Channel-0 Settings > Video > 2nd Stream Enable = <strong>Checked/True</strong></li>
+                            <li>Channel-0 Settings > Video > 2nd Stream Destination IP = <strong>The IP address of this EchoPilot AI device, <strong><span id='myIP2'></span></strong>.</li>
+                            <li>Channel-0 Settings > Video > 2nd Stream Destination Port = <strong>The port you wish to receive video on with this app, must match the setting below. The default value is 7000.</strong></li>
+                            <li>Channel-0 Settings > Encoder Settings > Stream Bitrate = <strong>~2000 [kbps]</strong></li>
+                        </ul>                    
                 </div>
 
 

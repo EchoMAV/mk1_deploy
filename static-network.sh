@@ -30,7 +30,9 @@ echo "Enter the network provisioning information below...";
 
 IFACE="eth0"
 IP_INPUT=$(interactive "172.20.1.4/24" "IPv4 Address with Netmask")
-GATEWAY=$(interactive "172.20.100.100" "IPv4 Gateway")
+# GATEWAY=$(interactive "172.20.100.100" "IPv4 Gateway")
+# no gateway for now, as we want the cellular to provide gateway 
+GATEWAY=""
 
 # validate ip address
 if [[ ! $IP_INPUT =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\/[0-9]{1,3}$ ]]; then
@@ -81,6 +83,10 @@ $SUDO nmcli c mod "static-$IFACE" ipv6.method "disabled"
 
 # bring up the interface
 $SUDO nmcli c up "static-$IFACE"
+
+# Set mcast routes
+$SUDO nmcli con mod "static-$IFACE" +ipv4.routes "224.0.0.0/8"
+$SUDO nmcli con mod "static-$IFACE" +ipv4.routes "239.0.0.0/8"
 
 # change hostname
 echo "Setting hostname to EchoMAV-MK1...";
