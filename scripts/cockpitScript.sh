@@ -47,6 +47,10 @@ while [[ $# -gt 0 ]]; do
             hostname -I | cut -d' ' -f1 | xargs
             exit 0
             ;;
+        -g)
+            gst-client list_pipelines
+            exit 0
+            ;;
     esac
     exit 0
 done

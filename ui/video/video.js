@@ -29,6 +29,35 @@ function InitPage() {
         myIP2.innerHTML=content.trim();     
     })
     .catch(error => Fail(error));  
+    var serverFound = false;
+    //get gst-client pipeline_list response
+    cockpit.script(scriptLocation + "cockpitScript.sh -g")
+    .then(function(content) {
+        var jsonObject = JSON.parse(content);
+        //assume response is json
+        //console.log(jsonObject);
+        for (const pipeline of jsonObject.response.nodes) { // You can use `let` instead of `const` if you like
+            if (pipeline.name === "server")
+            {     
+                serverFound = true;
+                break;
+            }
+        }
+        if (serverFound)
+        {
+            //enable the page
+            
+        }
+        else
+        {
+            //disable the page and alert use the video server component is not running
+            
+        }
+        //console.log(jsonObject.response.nodes);
+        //this returns content, now we need to see if the node response > nodes > name: server exists
+
+    })
+    .catch(error => Fail(error));  
 }
 
 function SuccessReadFile(content) {
