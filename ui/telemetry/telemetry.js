@@ -224,7 +224,7 @@ function SaveSettings() {
        .then(Success)
        .catch(Fail);
  
-   //cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);   
+   cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);   
 }
 
 function Success() {
