@@ -47,6 +47,14 @@ while [[ $# -gt 0 ]]; do
             hostname -I | cut -d' ' -f1 | xargs
             exit 0
             ;;
+        -g)
+            gst-client list_pipelines
+            exit 0
+            ;;
+	-t)
+            journalctl --no-pager -q -r -u mavnetProxy --output=short | grep -Po '(^|[ ,])FMU Connected=\K[^,]*' -m1 | sed 's/.$//'
+	    exit 0
+            ;;
     esac
     exit 0
 done
