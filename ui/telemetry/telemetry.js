@@ -10,6 +10,7 @@ const baudrate = document.getElementById("baudrate");
 const fmuId = document.getElementById("fmuId");
 const atakHost = document.getElementById("atakHost");
 const atakPort = document.getElementById("atakPort");
+const fmuConnStatus = document.getElementById("fmuConnStatus");
 const CONFIG_LENGTH = 11;
 // standard Baud rates
 const baudRateArray = [ 38400, 57600, 115200, 230400, 460800, 500000, 921600 ];
@@ -39,6 +40,38 @@ function InitPage() {
         ipsubnet1.innerHTML=content;        
     })
     .catch(error => Fail(error));  
+
+    cockpit.script(scriptLocation + "cockpitScript.sh -t")
+    .then(function(content) {
+        fmuStatus(content);    
+    })
+    .catch(error => Fail(error));  
+
+    setInterval(fmuStatusTimer, 3000);
+}
+
+function fmuStatusTimer() {
+    cockpit.script(scriptLocation + "cockpitScript.sh -t")
+    .then(function(content) {
+        fmuStatus(content);    
+    })
+    .catch(error => Fail(error));  
+}
+
+function fmuStatus(content)
+{
+    if (content === "true") {
+        fmuConnStatus.innerHTML = "Connected, Receiving Data";
+        fmuConnStatus.style.color = 'green';
+    }
+    else if (content === "false") {
+        fmuConnStatus.innerHTML = "Not Connected, Check Settings Below";
+        fmuConnStatus.style.color = 'red';
+    }
+    else {
+        fmuConnStatus.innerHTML = "Service Error, Not Connected";
+        fmuConnStatus.style.color = 'red';
+    }   
 }
 
 function SuccessReadFile(content) {

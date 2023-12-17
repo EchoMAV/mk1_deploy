@@ -11,15 +11,22 @@ const videoBitrate = document.getElementById("videoBitrate");
 const videoName = document.getElementById("videoName");
 const myIP = document.getElementById("myIP");
 const myIP2 = document.getElementById("myIP2");
+const mainSection = document.getElementById("mainSection");
+const noServerSection = document.getElementById("noServerSection");
 
 // used for mav, atak, and video
 const serverBitrateArray = [ "Disabled", "500", "750", "1000", "1250", "1500", "2000" ];
+
+//start both sections hidden, and then will enable appropriate section on page init
+mainSection.style.display="none";
+noServerSection.style.display="none";
 
 document.onload = InitPage();
 
 document.getElementById("save").addEventListener("click", SaveSettings);
 
 function InitPage() {
+
     cockpit.file(confLocation + "video.conf").read().then((content, tag) => SuccessReadFile(content))
     .catch(error => FailureReadFile(error));
 
@@ -31,12 +38,11 @@ function InitPage() {
     .catch(error => Fail(error));  
     var serverFound = false;
     //get gst-client pipeline_list response
+    //the response is JSON, and we are specifically look to make sure the "server" pipeline exists
     cockpit.script(scriptLocation + "cockpitScript.sh -g")
     .then(function(content) {
         var jsonObject = JSON.parse(content);
-        //assume response is json
-        //console.log(jsonObject);
-        for (const pipeline of jsonObject.response.nodes) { // You can use `let` instead of `const` if you like
+        for (const pipeline of jsonObject.response.nodes) { 
             if (pipeline.name === "server")
             {     
                 serverFound = true;
@@ -45,17 +51,16 @@ function InitPage() {
         }
         if (serverFound)
         {
-            //enable the page
-            
+            //enable the main contents
+            mainSection.style.display="block";
+            noServerSection.style.display="none";
         }
         else
         {
-            //disable the page and alert use the video server component is not running
-            
+            //disable the main contents and alert use the video server component is not running
+            mainSection.style.display="none";
+            noServerSection.style.display="block";   
         }
-        //console.log(jsonObject.response.nodes);
-        //this returns content, now we need to see if the node response > nodes > name: server exists
-
     })
     .catch(error => Fail(error));  
 }
@@ -83,6 +88,7 @@ function SuccessReadFile(content) {
             videoHost.value = myConfig.VIDEOSERVER_HOST;
             videoPort.value = myConfig.VIDEOSERVER_PORT;
             videoName.value = myConfig.VIDEOSERVER_STREAMNAME;
+            serverURL.innerHTML = "<a href='https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "</a>";
             AddDropDown(videoBitrate, serverBitrateArray, myConfig.VIDEOSERVER_BITRATE);
         }
         else{
@@ -150,16 +156,29 @@ function SaveSettings() {
         .catch(error => Fail(new Error("Failure, settings NOT changed!")));
 
     //rather than restarting video service, dynamically change settings
+
+    //bitrate
     var scaledBitrate = bitRate * 1000;
-    console.log("Scaled bitrate is " + scaledBitrate);
     cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", scaledBitrate]);
+
+    //server location
+    var serverURI="rtmp://" + videoHost.value + ":" + videoPort.value + "/live/" + videoName.value;
+    cockpit.spawn(["gst-client", "element_set", "server", "serverLocation", "location", serverURI]);
+
+    //gimbal receive port
+    cockpit.spawn(["gst-client", "element_set", "h265src", "serverReceivePort", "port", gimbalPort.value]);
+
+    //update the server URL link
+    serverURL.innerHTML = "<a href='https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "</a>";
+ 
+    //no longer restart services since all the above change settings using gst-interpipe
     //cockpit.spawn(["systemctl", "restart", "video"]);
     //cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);
 }
 
 function Success() {
     result.style.color = "green";
-    result.innerHTML = "Success, restarting Video Services...";
+    result.innerHTML = "Success, video stream parameters updated...";
     setTimeout(() => result.innerHTML = "", 4000);
 }
 

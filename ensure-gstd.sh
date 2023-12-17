@@ -104,7 +104,8 @@ elif [ "${PLATFORM}" == "RPIX" ] ; then
 elif [ "${PLATFORM}" == "NVID" ] ; then
 	( cd ${GST_INTERPIPE_SRC} && ./autogen.sh --libdir /usr/lib/aarch64-linux-gnu && make clean && make )
 else
-	( cd ${GST_INTERPIPE_SRC} && ./autogen.sh && make clean && make )
+	# Assume x86 Debian
+	( cd ${GST_INTERPIPE_SRC} && ./autogen.sh --libdir /usr/lib/x86_64-linux-gnu/ && make clean && make )
 fi
 ( cd ${GST_INTERPIPE_SRC} && $SUDO make install )
 # https://github.com/RidgeRun/gst-interpipe/issues/49

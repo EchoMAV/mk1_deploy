@@ -51,9 +51,9 @@ while [[ $# -gt 0 ]]; do
             gst-client list_pipelines
             exit 0
             ;;
-	-t)
+	    -t)
             journalctl --no-pager -q -r -u mavnetProxy --output=short | grep -Po '(^|[ ,])FMU Connected=\K[^,]*' -m1 | sed 's/.$//'
-	    exit 0
+	        exit 0
             ;;
     esac
     exit 0

@@ -8,8 +8,17 @@
 </head>
 
 <body>
-    <div class="pf-c-page">
+    <div class="pf-c-page" id="noServerSection">
         <main class="pf-c-page__main" tabindex="-1">
+            <section class="pf-c-page__main-section pf-m-light m-3">
+                <p class="text-danger">Error: The video services are not running, this section is not available.</p>
+            </section> 
+        </main>
+    </div>
+        
+    <div class="pf-c-page" id="mainSection">
+        <main class="pf-c-page__main" tabindex="-1">
+
             <section class="pf-c-page__main-section pf-m-light">
 
                 <div class="row justify-content-start">
@@ -49,7 +58,12 @@
 
                 <div class="row justify-content-start">
                     <div class="col-2 ms-3 mt-3"><label class="control-label" for="videoName">Stream Name</label></div>
-                    <div class="col mt-3"><input id="videoName"></div></div>
+                    <div class="col mt-3"><input id="videoName"></div>
+                </div>
+
+                <div class="row justify-content-start">
+                    <div class="col-2 ms-3 mt-3"><label class="control-label" for="videoName">Stream URL:</label></div>
+                    <div class="col mt-3"><text id="serverURL"></div>
                 </div>
               
                 <div class="row justify-content-start">
@@ -57,7 +71,7 @@
                     <div class="col mt-3"><span id="result"></span></div>
                 </div>
 
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-info m-3 mt-5" role="alert">
                    <p class="mt-1 me-3">The TRIP6 Settings must match those below:</p>
                         <ul>
                             <li>Channel-0 Settings > Video > Encapsulation Format = <strong>RTP/AVP</strong></li>
