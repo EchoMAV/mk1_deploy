@@ -54,23 +54,22 @@ function fmuStatusTimer() {
     cockpit.script(scriptLocation + "cockpitScript.sh -t")
     .then(function(content) {
         console.log ("got status of " + content);
-        fmuStatus(content);    
+        fmuStatus(content.trim());    
     })
     .catch(error => Fail(error));  
 }
 
 function fmuStatus(content)
 {
-    if (content.trim() === "true") {
+    if (content === "true") {
         fmuConnStatus.innerHTML = "Connected, Receiving Data";
         fmuConnStatus.style.color = 'green';
     }
-    else if (content.trim() === "false") {
+    else if (content === "false") {
         fmuConnStatus.innerHTML = "Not Connected, Check Settings Below";
         fmuConnStatus.style.color = 'red';
     }
-    else {
-        console.log("1content is:" + content + ":");
+    else {        
         fmuConnStatus.innerHTML = "Service Error, Not Connected";
         fmuConnStatus.style.color = 'red';
     }   
