@@ -70,6 +70,7 @@ function fmuStatus(content)
         fmuConnStatus.style.color = 'red';
     }
     else {
+        console.log("1content is " + content);
         fmuConnStatus.innerHTML = "Service Error, Not Connected";
         fmuConnStatus.style.color = 'red';
     }   
