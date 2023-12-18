@@ -43,7 +43,7 @@ function InitPage() {
 
     cockpit.script(scriptLocation + "cockpitScript.sh -t")
     .then(function(content) {
-        fmuStatus(content);    
+        fmuStatus(content.trim());    
     })
     .catch(error => Fail(error));  
 
