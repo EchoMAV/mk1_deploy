@@ -53,6 +53,7 @@ function InitPage() {
 function fmuStatusTimer() {
     cockpit.script(scriptLocation + "cockpitScript.sh -t")
     .then(function(content) {
+        console.log ("got status of " + content);
         fmuStatus(content);    
     })
     .catch(error => Fail(error));  

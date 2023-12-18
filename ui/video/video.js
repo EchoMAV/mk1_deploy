@@ -41,25 +41,34 @@ function InitPage() {
     //the response is JSON, and we are specifically look to make sure the "server" pipeline exists
     cockpit.script(scriptLocation + "cockpitScript.sh -g")
     .then(function(content) {
-        var jsonObject = JSON.parse(content);
-        for (const pipeline of jsonObject.response.nodes) { 
-            if (pipeline.name === "server")
-            {     
-                serverFound = true;
-                break;
+        try {
+            var jsonObject = JSON.parse(content);
+
+            for (const pipeline of jsonObject.response.nodes) { 
+                if (pipeline.name === "server")
+                {     
+                    serverFound = true;
+                    break;
+                }
+            }
+            if (serverFound)
+            {
+                //enable the main contents
+                mainSection.style.display="block";
+                noServerSection.style.display="none";
+            }
+            else
+            {
+                //disable the main contents and alert use the video server component is not running
+                mainSection.style.display="none";
+                noServerSection.style.display="block";   
             }
         }
-        if (serverFound)
+        catch (error)
         {
-            //enable the main contents
-            mainSection.style.display="block";
-            noServerSection.style.display="none";
-        }
-        else
-        {
-            //disable the main contents and alert use the video server component is not running
-            mainSection.style.display="none";
-            noServerSection.style.display="block";   
+              //disable the main contents and alert use the video server component is not running
+              mainSection.style.display="none";
+              noServerSection.style.display="block";   
         }
     })
     .catch(error => Fail(error));  
