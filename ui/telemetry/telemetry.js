@@ -61,16 +61,16 @@ function fmuStatusTimer() {
 
 function fmuStatus(content)
 {
-    if (content === "true") {
+    if (content.trim() === "true") {
         fmuConnStatus.innerHTML = "Connected, Receiving Data";
         fmuConnStatus.style.color = 'green';
     }
-    else if (content === "false") {
+    else if (content.trim() === "false") {
         fmuConnStatus.innerHTML = "Not Connected, Check Settings Below";
         fmuConnStatus.style.color = 'red';
     }
     else {
-        console.log("1content is " + content);
+        console.log("1content is:" + content + ":");
         fmuConnStatus.innerHTML = "Service Error, Not Connected";
         fmuConnStatus.style.color = 'red';
     }   
