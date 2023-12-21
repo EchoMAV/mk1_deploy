@@ -166,23 +166,25 @@ function SaveSettings() {
 
     //rather than restarting video service, dynamically change settings
 
+    //stop the pipeline (can't change location without stopping anyway)
+    cockpit.spawn(["gst-client", "pipeline_stop", "server"]);
+
     //bitrate
     var scaledBitrate = bitRate * 1000;
     cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", scaledBitrate]);
 
     //server location
-    var serverURI="rtmp://" + videoHost.value + "/LiveApp?streamid=LiveApp/" + videoName.value + " live=1";
+    var serverURI="rtmp://" + videoHost.value + "/LiveApp?streamid=LiveApp/" + videoName.value;
     cockpit.spawn(["gst-client", "element_set", "server", "serverLocation", "location", serverURI]);
 
-    //gimbal receive port
-    cockpit.spawn(["gst-client", "element_set", "h265src", "serverReceivePort", "port", gimbalPort.value]);
+    //gimbal receive port (not used for antmedia)
+    //cockpit.spawn(["gst-client", "element_set", "h265src", "serverReceivePort", "port", gimbalPort.value]);
 
     //update the server URL link
     serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
     
-    //no longer restart services since all the above change settings using gst-interpipe
-    //cockpit.spawn(["systemctl", "restart", "video"]);
-    //cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);
+    //start the pipeline back
+    cockpit.spawn(["gst-client", "pipeline_play", "server"]);    
 }
 
 function Success() {
