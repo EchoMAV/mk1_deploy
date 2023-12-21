@@ -171,7 +171,8 @@ function SaveSettings() {
 
     //bitrate
     var scaledBitrate = bitRate * 1000;
-    cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", scaledBitrate]);
+    //currently using x264enc which does not use scaled bitrate
+    cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", bitRate]);
 
     //server location
     var serverURI="rtmp://" + videoHost.value + "/LiveApp?streamid=LiveApp/" + videoName.value;
