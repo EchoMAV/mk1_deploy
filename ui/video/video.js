@@ -184,8 +184,9 @@ function SaveSettings() {
     //update the server URL link
     serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
     
-    //start the pipeline back
-    cockpit.spawn(["gst-client", "pipeline_play", "server"]);    
+    //start the pipeline back (unless disabled)
+    if (bitRate!==0)
+        cockpit.spawn(["gst-client", "pipeline_play", "server"]);    
 }
 
 function Success() {
