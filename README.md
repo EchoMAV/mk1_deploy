@@ -13,12 +13,9 @@ Other dependencies will be installed automatically by during a `make install` as
 To perform an initial install, establish an internet connection and clone the repository.
 You will issue the following commands:
 ```
+sudo apt-get install git-lfs -y
 cd $HOME
 git clone https://github.com/echomav/mk1_deploy.git
-```
-
-provide your credentials, then continue:
-```
 make -C $HOME/mk1_deploy install
 ```
 
