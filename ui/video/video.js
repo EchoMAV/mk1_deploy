@@ -6,7 +6,7 @@ const gimbalPort = document.getElementById("gimbalPort");
 //const atakIface = document.getElementById("atakIface");
 //const atakBitrate = document.getElementById("atakBitrate");
 const videoHost = document.getElementById("videoHost");
-const videoPort = document.getElementById("videoPort");
+//const videoPort = document.getElementById("videoPort");
 const videoBitrate = document.getElementById("videoBitrate");
 const videoName = document.getElementById("videoName");
 const myIP = document.getElementById("myIP");
@@ -95,9 +95,9 @@ function SuccessReadFile(content) {
         if(splitResult.length > 0) {
             gimbalPort.value = myConfig.GIMBAL_PORT;
             videoHost.value = myConfig.VIDEOSERVER_HOST;
-            videoPort.value = myConfig.VIDEOSERVER_PORT;
+           // videoPort.value = myConfig.VIDEOSERVER_PORT;
             videoName.value = myConfig.VIDEOSERVER_STREAMNAME;
-            serverURL.innerHTML = "<a href='https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "</a>";
+            serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
             AddDropDown(videoBitrate, serverBitrateArray, myConfig.VIDEOSERVER_BITRATE);
         }
         else{
@@ -138,7 +138,7 @@ function FailureReadFile(error) {
 
     // Defaults
     videoHost.value = "video.echomav.com";
-    videoPort.value = "1935";    
+    //videoPort.value = "1935";    
     videoName.value = "CHANGETOFFAID";
     gimbalPort.value = "7000";
     platform.value = "NVID";
@@ -157,7 +157,7 @@ function SaveSettings() {
     cockpit.file(confLocation + "video.conf").replace("[Service]\n" + 
         "GIMBAL_PORT=" + gimbalPort.value + "\n" +
         "VIDEOSERVER_HOST=" + videoHost.value + "\n" +
-        "VIDEOSERVER_PORT=" + videoPort.value + "\n" +
+        "VIDEOSERVER_PORT=1935" + "\n" +
         "VIDEOSERVER_BITRATE=" + bitRate + "\n" +        
         "VIDEOSERVER_STREAMNAME=" + videoName.value + "\n" +
         "PLATFORM=NVID" + "\n")
@@ -171,15 +171,15 @@ function SaveSettings() {
     cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", scaledBitrate]);
 
     //server location
-    var serverURI="rtmp://" + videoHost.value + ":" + videoPort.value + "/live/" + videoName.value;
+    var serverURI="rtmp://" + videoHost.value + "/LiveApp?streamid=LiveApp/" + videoName.value + " live=1";
     cockpit.spawn(["gst-client", "element_set", "server", "serverLocation", "location", serverURI]);
 
     //gimbal receive port
     cockpit.spawn(["gst-client", "element_set", "h265src", "serverReceivePort", "port", gimbalPort.value]);
 
     //update the server URL link
-    serverURL.innerHTML = "<a href='https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/viewer.html?streamName=" + videoName.value + "</a>";
- 
+    serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
+    
     //no longer restart services since all the above change settings using gst-interpipe
     //cockpit.spawn(["systemctl", "restart", "video"]);
     //cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);

@@ -27,13 +27,12 @@ gstd -e -f /var/run -l /var/run/video-stream/gstd.log -d /var/run/video-stream/g
 
 gst-client pipeline_create h265src udpsrc port=${GIMBAL_PORT} name=serverReceivePort ! "application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H265, payload=(int)96" ! rtph265depay ! interpipesink name=h265src
 # gst-client pipeline_create los interpipesrc listen-to=h265src block=true is-live=true allow-renegotiation=true stream-sync=compensate-ts ! rtph265pay config-interval=1 pt=96 ! udpsink sync=false host=${LOS_HOST} port=${LOS_PORT} ${extra_los}
-# rtmp server (depracated)
-# gst-client pipeline_create server interpipesrc listen-to=h265src block=false is-live=true allow-renegotiation=true stream-sync=compensate-ts ! queue ! h265parse ! nvv4l2decoder enable-max-performance=true disable-dpb=true ! queue ! nvv4l2h264enc idrinterval=30 control-rate=1 bitrate=${VIDEOSERVER_BITRATE} preset-level=1 name=serverEncoder ! h264parse ! flvmux streamable=true ! rtmpsink location=rtmp://${VIDEOSERVER_HOST}:${VIDEOSERVER_PORT}/live/${VIDEOSERVER_STREAMNAME}	name=serverLocation
 
-# srt server, note that you can't seem to pass a hostname to srtsink, only an IP address. Maybe do an IP lookup in mavnetProxy after you have internet, e.g. dig +short $hostname | -head -1 and then set the IP address using interpipe
-# for srt streams, the video server has to know about them before the stream is started. They are separated by IP addresses. So in the case of SRT, we will figure out the port on our own based on negotiation that happens with mavnetProxy. mavnetProxy will then set the port using interpipes before starting playback.
-# should probably also set the passphrase at runtime so we can store it in compiled code, the passphrase is what keeps anyone from being able to fake a stream
-gst-client pipeline_create server interpipesrc listen-to=h265src block=false is-live=true allow-renegotiation=true stream-sync=compensate-ts ! queue ! h265parse ! nvv4l2decoder enable-max-performance=true disable-dpb=true ! queue ! queue ! nvv4l2h264enc control-rate=0 bitrate=${VIDEOSERVER_BITRATE} profile=0 preset-level=1 maxperf-enable=1 idrinterval=30 EnableTwopassCBR=true name=serverEncoder ! mpegtsmux ! srtsink uri=srt://${VIDEOSERVER_HOST}:8000 pbkeylen=16 passphrase=echomav8echomav4 name=serverLocation
+# rtmp server variation
+gst-client pipeline_create server interpipesrc listen-to=h265src block=false is-live=true allow-renegotiation=true stream-sync=compensate-ts ! queue ! h265parse ! nvv4l2decoder enable-max-performance=true disable-dpb=true ! queue ! nvv4l2h264enc idrinterval=30 control-rate=1 bitrate=${VIDEOSERVER_BITRATE} preset-level=1 name=serverEncoder ! h264parse ! flvmux streamable=true ! rtmpsink location="rtmp://${VIDEOSERVER_HOST}/LiveApp?streamid=LiveApp/${VIDEOSERVER_STREAMNAME} live=1" name=serverLocation
+
+# srt variation, it seems that srt to antmedia requires gstreamer 1.20+, which is a PITA to install on L4T based on Ubuntu 20.04 LTS. Recommend RTMP until L4T 36.x becomes more stable and we can get gstreamer 1.20+
+# gst-client pipeline_create server interpipesrc listen-to=h265src block=false is-live=true allow-renegotiation=true stream-sync=compensate-ts ! queue ! h265parse ! nvv4l2decoder enable-max-performance=true disable-dpb=true ! queue ! queue ! nvv4l2h264enc control-rate=0 bitrate=${VIDEOSERVER_BITRATE} profile=0 preset-level=1 maxperf-enable=1 idrinterval=30 EnableTwopassCBR=true name=serverEncoder ! mpegtsmux ! srtsink uri=srt://${VIDEOSERVER_HOST}:8000 pbkeylen=16 passphrase=echomav8echomav4 name=serverLocation
 
 # nb: the server pipeline should be started by a supervisory program (like mavnetproxy) when we know we have connectivity. it is started with gst-client pipeline_play server
 
