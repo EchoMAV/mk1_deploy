@@ -146,7 +146,7 @@ function FailureReadFile(error) {
 
 function CheckDisabled(disable){
     if(disable == "Disabled"){
-        return "0";
+        return 0;
     }
     return disable;
 }
