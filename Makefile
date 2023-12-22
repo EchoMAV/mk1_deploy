@@ -14,7 +14,7 @@ LOCAL=/usr/local
 LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/serial_number.py scripts/snap.sh
 CONFIG ?= /var/local
 LIBSYSTEMD=/lib/systemd/system
-PKGDEPS ?= v4l-utils build-essential nano nload htop modemmanager
+PKGDEPS ?= v4l-utils build-essential nano nload htop modemmanager curl
 SERVICES=mavnetProxy.service temperature.service video.service
 SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
@@ -41,6 +41,8 @@ clean:
 
 dependencies:	
 	@if [ ! -z "$(PKGDEPS)" ] ; then $(SUDO) apt-get install -y $(PKGDEPS) ; fi
+	@curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | $(SUDO) bash
+	@$(SUDO) apt-get install speedtest
 
 cellular:
 # install sierra wireless USB driver. This is not strictly neccesary but may be required if all the interfaces are needed (DM, NMEA, AT), should show up as /dev/ttuUSB0, 1, 2
