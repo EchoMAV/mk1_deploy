@@ -194,7 +194,7 @@ function SaveSettings() {
     serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
 
     //generate the QR Code
-    //qrcode.makeCode("https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value);
+    qrcode.makeCode("https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value);
     
     //start the pipeline back (unless disabled)
     if (bitRate!==0)
