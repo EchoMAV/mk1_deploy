@@ -27,6 +27,11 @@ document.getElementById("save").addEventListener("click", SaveSettings);
 
 function InitPage() {
 
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        width : 100,
+        height : 100
+    });
+
     cockpit.file(confLocation + "video.conf").read().then((content, tag) => SuccessReadFile(content))
     .catch(error => FailureReadFile(error));
 
@@ -98,6 +103,7 @@ function SuccessReadFile(content) {
            // videoPort.value = myConfig.VIDEOSERVER_PORT;
             videoName.value = myConfig.VIDEOSERVER_STREAMNAME;
             serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
+            qrcode.makeCode("https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value);
             AddDropDown(videoBitrate, serverBitrateArray, myConfig.VIDEOSERVER_BITRATE);
         }
         else{
@@ -146,7 +152,7 @@ function FailureReadFile(error) {
 
 function CheckDisabled(disable){
     if(disable == "Disabled"){
-        return "0";
+        return 0;
     }
     return disable;
 }
@@ -166,23 +172,30 @@ function SaveSettings() {
 
     //rather than restarting video service, dynamically change settings
 
+    //stop the pipeline (can't change location without stopping anyway)
+    cockpit.spawn(["gst-client", "pipeline_stop", "server"]);
+
     //bitrate
     var scaledBitrate = bitRate * 1000;
-    cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", scaledBitrate]);
+    //currently using x264enc which does not use scaled bitrate
+    cockpit.spawn(["gst-client", "element_set", "server", "serverEncoder", "bitrate", bitRate]);
 
     //server location
-    var serverURI="rtmp://" + videoHost.value + "/LiveApp?streamid=LiveApp/" + videoName.value + " live=1";
+    var serverURI="rtmp://" + videoHost.value + "/LiveApp?streamid=LiveApp/" + videoName.value;
     cockpit.spawn(["gst-client", "element_set", "server", "serverLocation", "location", serverURI]);
 
-    //gimbal receive port
-    cockpit.spawn(["gst-client", "element_set", "h265src", "serverReceivePort", "port", gimbalPort.value]);
+    //gimbal receive port (not used for antmedia)
+    //cockpit.spawn(["gst-client", "element_set", "h265src", "serverReceivePort", "port", gimbalPort.value]);
 
     //update the server URL link
     serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
+
+    //generate the QR Code
+    qrcode.makeCode("https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value);
     
-    //no longer restart services since all the above change settings using gst-interpipe
-    //cockpit.spawn(["systemctl", "restart", "video"]);
-    //cockpit.spawn(["systemctl", "restart", "mavnetProxy"]);
+    //start the pipeline back (unless disabled)
+    if (bitRate!==0)
+        cockpit.spawn(["gst-client", "pipeline_play", "server"]);    
 }
 
 function Success() {
