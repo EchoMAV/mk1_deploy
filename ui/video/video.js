@@ -1,3 +1,5 @@
+import QRcode from './qrcode.min.js'
+
 const confLocation = "/usr/local/echopilot/mavnetProxy/";
 const scriptLocation = "/usr/local/echopilot/scripts/";
 const gimbalPort = document.getElementById("gimbalPort");
@@ -14,7 +16,6 @@ const myIP2 = document.getElementById("myIP2");
 const mainSection = document.getElementById("mainSection");
 const noServerSection = document.getElementById("noServerSection");
 
-import QRcode from './qrcode.min.js'
 
 // used for mav, atak, and video
 const serverBitrateArray = [ "Disabled", "500", "750", "1000", "1250", "1500", "2000" ];
