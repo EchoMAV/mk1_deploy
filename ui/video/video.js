@@ -1,4 +1,4 @@
-import QRcode from './qrcode.min.js'
+const QRcode = require('./qrcode.min.js');  
 
 const confLocation = "/usr/local/echopilot/mavnetProxy/";
 const scriptLocation = "/usr/local/echopilot/scripts/";
