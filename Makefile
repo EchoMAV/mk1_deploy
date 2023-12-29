@@ -110,6 +110,7 @@ install: dependencies
 
 # build and install n2n
 	@echo "Starting interactive session to set up N2N..."
+	@$(MAKE) --no-print-directory n2n
 
 # install cockpit
 	@$(MAKE) --no-print-directory cockpit
