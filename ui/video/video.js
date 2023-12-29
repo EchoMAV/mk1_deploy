@@ -106,7 +106,7 @@ function SuccessReadFile(content) {
            // videoPort.value = myConfig.VIDEOSERVER_PORT;
             videoName.value = myConfig.VIDEOSERVER_STREAMNAME;
             serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
-            //qrcode.makeCode("https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value);
+            qrcode.makeCode("https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value);
             AddDropDown(videoBitrate, serverBitrateArray, myConfig.VIDEOSERVER_BITRATE);
         }
         else{
