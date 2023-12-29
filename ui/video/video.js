@@ -27,7 +27,7 @@ document.onload = InitPage();
 
 document.getElementById("save").addEventListener("click", SaveSettings);
 
-
+var QRCode;
 
 
 function InitPage() {
@@ -37,7 +37,7 @@ function InitPage() {
         width : 100,
         height : 100
     });
-    
+
     cockpit.file(confLocation + "video.conf").read().then((content, tag) => SuccessReadFile(content))
     .catch(error => FailureReadFile(error));
 
@@ -219,7 +219,7 @@ function Fail(error) {
 cockpit.transport.wait(function() { });
 
 
-var QRCode;
+
 
 (function () {
 	//---------------------------------------------------------------------
