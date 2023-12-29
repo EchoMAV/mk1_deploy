@@ -29,8 +29,8 @@ document.onload = InitPage();
 document.getElementById("save").addEventListener("click", SaveSettings);
 
 var qrcode = new QRcode(document.getElementById("qrcode"), {
-    width : 175,
-    height : 175
+    width : 100,
+    height : 100
 });
 
 function InitPage() {
