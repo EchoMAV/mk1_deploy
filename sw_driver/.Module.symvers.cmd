@@ -1,1 +1,1 @@
-cmd_/home/echopilot/mk1_deploy/sw_driver/Module.symvers := sed 's/ko$$/o/' /home/echopilot/mk1_deploy/sw_driver/modules.order | scripts/mod/modpost -m  -E  -o /home/echopilot/mk1_deploy/sw_driver/Module.symvers -e -i Module.symvers   -T -
+cmd_/home/brad/mk1_deploy/sw_driver/Module.symvers := sed 's/\.ko$$/\.o/' /home/brad/mk1_deploy/sw_driver/modules.order | scripts/mod/modpost -m -a  -o /home/brad/mk1_deploy/sw_driver/Module.symvers -e -i Module.symvers   -T -
