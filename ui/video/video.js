@@ -27,23 +27,14 @@ document.onload = InitPage();
 
 document.getElementById("save").addEventListener("click", SaveSettings);
 
-var qrcode;
-
+var qrcode = new QRcode(document.getElementById("qrcode"), {
+    width : 100,
+    height : 100
+});
 
 
 function InitPage() {
 
-    var js = document.createElement("script");
-
-    js.type = "text/javascript";
-    js.src = "./qrcode.min.js";
-
-    document.body.appendChild(js);
-
-    qrcode = new QRcode(document.getElementById("qrcode"), {
-        width : 100,
-        height : 100
-    });
 
     cockpit.file(confLocation + "video.conf").read().then((content, tag) => SuccessReadFile(content))
     .catch(error => FailureReadFile(error));
