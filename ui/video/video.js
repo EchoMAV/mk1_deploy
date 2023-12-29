@@ -14,6 +14,8 @@ const myIP2 = document.getElementById("myIP2");
 const mainSection = document.getElementById("mainSection");
 const noServerSection = document.getElementById("noServerSection");
 
+import QRcode from './qrcode.min.js'
+
 // used for mav, atak, and video
 const serverBitrateArray = [ "Disabled", "500", "750", "1000", "1250", "1500", "2000" ];
 
@@ -25,7 +27,7 @@ document.onload = InitPage();
 
 document.getElementById("save").addEventListener("click", SaveSettings);
 
-var qrcode = new QRCode(document.getElementById("qrcode"), {
+var qrcode = new QRcode(document.getElementById("qrcode"), {
     width : 100,
     height : 100
 });
