@@ -143,11 +143,11 @@ function FailureReadFile(error) {
     output.innerHTML = "Error : " + error.message;
 
     // Defaults
-    videoHost.value = "video.echomav.com";
+    videoHost.value = "data.echomav.com";
     //videoPort.value = "1935";    
     videoName.value = "CHANGETOFFAID";
     gimbalPort.value = "7000";
-    platform.value = "NVID";
+    //platform.value = "NVID";
 }
 
 function CheckDisabled(disable){
