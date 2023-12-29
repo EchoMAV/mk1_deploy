@@ -27,14 +27,14 @@ document.onload = InitPage();
 
 document.getElementById("save").addEventListener("click", SaveSettings);
 
-
+var qrcode;
 
 
 function InitPage() {
 
         
-    var qrcode = new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
-    
+    qrcode = new QRCode(document.getElementById("qrcode"), "https://data.echomav.com");
+
     cockpit.file(confLocation + "video.conf").read().then((content, tag) => SuccessReadFile(content))
     .catch(error => FailureReadFile(error));
 
