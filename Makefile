@@ -11,17 +11,19 @@ SUDO := $(shell test $${EUID} -ne 0 && echo "sudo")
 
 SERIAL ?= $(shell python3 serial_number.py)
 LOCAL=/usr/local
-LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/stop-video.sh scripts/serial_number.py scripts/snap.sh
+LOCAL_SCRIPTS=scripts/start.sh scripts/cockpitScript.sh scripts/temperature.sh scripts/start-video.sh scripts/stop-video.sh scripts/serial_number.py scripts/snap.sh scripts/start-edge.sh
 CONFIG ?= /var/local
 LIBSYSTEMD=/lib/systemd/system
-PKGDEPS ?= v4l-utils build-essential nano nload htop modemmanager curl
-SERVICES=mavnetProxy.service temperature.service video.service
+PKGDEPS ?= v4l-utils build-essential nano nload picocom curl htop modemmanager
+SERVICES=mavnetProxy.service temperature.service video.service edge.service
 SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
 SW_LOCATION=sw_driver
+N2N_REPO=https://github.com/ntop/n2n.git
+N2N_REV=3.1.1
 
-.PHONY = clean dependencies cockpit cellular network enable install provision see uninstall 
+.PHONY = clean dependencies cockpit cellular network enable install provision see uninstall n2n
 
 default:
 	@echo "Please choose an action:"
@@ -54,9 +56,15 @@ network:
 # start an interactive session to configure the network
 	@$(SUDO) ./static-network.sh
 
+n2n:
+# clone and build n2n
+	@[ -d src ] || mkdir -p src
+	@git clone $(N2N_REPO) -b $(N2N_REV) src
+	@( cd ./src && ./autogen.sh && ./configure && make && $(SUDO) make install )
+	@for s in $(LOCAL_SCRIPTS) ; do $(SUDO) install -Dm755 $${s} $(LOCAL)/echopilot/$${s} ; done
+	
 cockpit:
 	@$(SUDO) ./ensure-cockpit.sh
-
 	@for s in $(LOCAL_SCRIPTS) ; do $(SUDO) install -Dm755 $${s} $(LOCAL)/echopilot/$${s} ; done
 
 # set up cockpit files
@@ -99,6 +107,10 @@ install: dependencies
 	$(SUDO) apt update
 	@PLATFORM=$(PLATFORM) ./ensure-gst.sh $(DRY_RUN)
 	@PLATFORM=$(PLATFORM) ./ensure-gstd.sh $(DRY_RUN)	
+
+# build and install n2n
+	@echo "Starting interactive session to set up N2N..."
+	@$(MAKE) --no-print-directory n2n
 
 # install cockpit
 	@$(MAKE) --no-print-directory cockpit
@@ -143,6 +155,9 @@ install: dependencies
 	@echo "Starting interactive session to set up the network..."
 	@$(MAKE) --no-print-directory network
 
+# provision n2n
+	@$(SUDO) python3 n2nConfigure.py --interactive --start
+
 # cleanup and final settings
 	@echo "Final cleanup..."
 	@$(SUDO) chown -R echopilot /usr/local/echopilot
@@ -158,6 +173,7 @@ see:
 #   mavnet conf not applicable yet
 #	$(SUDO) cat $(SYSCFG)/mavnet.conf
 	$(SUDO) cat $(SYSCFG)/video.conf
+	$(SUDO) cat $(SYSCFG)/edge.conf
 	@echo -n "Cellular APN is: "
 	@$(SUDO) nmcli con show attcell | grep gsm.apn | cut -d ":" -f2 | xargs
 

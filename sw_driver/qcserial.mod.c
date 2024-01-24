@@ -1,10 +1,12 @@
 #include <linux/module.h>
 #define INCLUDE_VERMAGIC
 #include <linux/build-salt.h>
+#include <linux/elfnote-lto.h>
 #include <linux/vermagic.h>
 #include <linux/compiler.h>
 
 BUILD_SALT;
+BUILD_LTO_INFO;
 
 MODULE_INFO(vermagic, VERMAGIC_STRING);
 MODULE_INFO(name, KBUILD_MODNAME);
@@ -25,31 +27,33 @@ MODULE_INFO(retpoline, "Y");
 
 static const struct modversion_info ____versions[]
 __used __section("__versions") = {
-	{ 0xd31aec96, "module_layout" },
-	{ 0xf6987f42, "param_ops_bool" },
-	{ 0x11deee56, "usb_wwan_dtr_rts" },
-	{ 0x78447b21, "usb_wwan_tiocmset" },
-	{ 0xd5fd8132, "usb_wwan_tiocmget" },
-	{ 0xb8604d29, "usb_wwan_chars_in_buffer" },
-	{ 0xbb0e49b1, "usb_wwan_write_room" },
-	{ 0x32325df0, "usb_wwan_write" },
-	{ 0xf2c01b4e, "usb_wwan_close" },
-	{ 0xbd3591fa, "usb_wwan_open" },
-	{ 0x3de93407, "usb_wwan_resume" },
-	{ 0xce15b868, "usb_wwan_suspend" },
-	{ 0xbe931bf0, "usb_wwan_port_remove" },
-	{ 0xc4d231e4, "usb_wwan_port_probe" },
-	{ 0xd8aa9476, "usb_serial_deregister_drivers" },
-	{ 0xa7550869, "usb_serial_register_drivers" },
-	{ 0x201578be, "usb_disable_autosuspend" },
-	{ 0xc5850110, "printk" },
-	{ 0xac67b9cc, "dev_driver_string" },
-	{ 0x6fd70b1c, "usb_set_interface" },
-	{ 0x9ac23f86, "kmem_cache_alloc_trace" },
-	{ 0x52d1fb52, "kmalloc_caches" },
+	{ 0x6ad771c3, "module_layout" },
+	{ 0x83253110, "param_ops_bool" },
+	{ 0x1d4c55ab, "usb_wwan_dtr_rts" },
+	{ 0x85cd6ee4, "usb_wwan_tiocmset" },
+	{ 0xed75ec89, "usb_wwan_tiocmget" },
+	{ 0xca33b237, "usb_wwan_chars_in_buffer" },
+	{ 0x516d348b, "usb_wwan_write_room" },
+	{ 0x148690d9, "usb_wwan_write" },
+	{ 0x89ffeb18, "usb_wwan_close" },
+	{ 0xc8f7c98e, "usb_wwan_open" },
+	{ 0x73d12eb4, "usb_wwan_resume" },
+	{ 0x6018975d, "usb_wwan_suspend" },
+	{ 0x7f899cc5, "usb_wwan_port_remove" },
+	{ 0x1194d63c, "usb_wwan_port_probe" },
+	{ 0xaa6c041b, "usb_serial_deregister_drivers" },
+	{ 0x8f59dfff, "usb_serial_register_drivers" },
+	{ 0x54b1fac6, "__ubsan_handle_load_invalid_value" },
+	{ 0x92997ed8, "_printk" },
+	{ 0xb06a469c, "dev_driver_string" },
+	{ 0xa46d5a4f, "usb_set_interface" },
+	{ 0x583d61f9, "usb_disable_autosuspend" },
+	{ 0x4f00afd3, "kmem_cache_alloc_trace" },
+	{ 0xd69e5a4f, "kmalloc_caches" },
 	{ 0x37a0cba, "kfree" },
+	{ 0x5b8239ca, "__x86_return_thunk" },
 	{ 0x67b27ec1, "tty_std_termios" },
-	{ 0x1fdc7df2, "_mcount" },
+	{ 0xbdfb6dbb, "__fentry__" },
 };
 
 MODULE_INFO(depends, "usb_wwan,usbserial");

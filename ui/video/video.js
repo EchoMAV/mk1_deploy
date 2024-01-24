@@ -1,3 +1,4 @@
+
 const confLocation = "/usr/local/echopilot/mavnetProxy/";
 const scriptLocation = "/usr/local/echopilot/scripts/";
 const gimbalPort = document.getElementById("gimbalPort");
@@ -14,6 +15,7 @@ const myIP2 = document.getElementById("myIP2");
 const mainSection = document.getElementById("mainSection");
 const noServerSection = document.getElementById("noServerSection");
 
+
 // used for mav, atak, and video
 const serverBitrateArray = [ "Disabled", "500", "750", "1000", "1250", "1500", "2000" ];
 
@@ -25,12 +27,13 @@ document.onload = InitPage();
 
 document.getElementById("save").addEventListener("click", SaveSettings);
 
+var qrcode;
+
+
 function InitPage() {
 
-    var qrcode = new QRCode(document.getElementById("qrcode"), {
-        width : 100,
-        height : 100
-    });
+        
+    qrcode = new QRCode(document.getElementById("qrcode"), "https://data.echomav.com");
 
     cockpit.file(confLocation + "video.conf").read().then((content, tag) => SuccessReadFile(content))
     .catch(error => FailureReadFile(error));
@@ -143,11 +146,11 @@ function FailureReadFile(error) {
     output.innerHTML = "Error : " + error.message;
 
     // Defaults
-    videoHost.value = "video.echomav.com";
+    videoHost.value = "data.echomav.com";
     //videoPort.value = "1935";    
     videoName.value = "CHANGETOFFAID";
     gimbalPort.value = "7000";
-    platform.value = "NVID";
+    //platform.value = "NVID";
 }
 
 function CheckDisabled(disable){
@@ -211,3 +214,4 @@ function Fail(error) {
 
 // Send a 'init' message.  This tells integration tests that we are ready to go
 cockpit.transport.wait(function() { });
+
