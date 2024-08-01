@@ -71,8 +71,7 @@ if [ "${PLATFORM}" == "IMX6" ] ; then
 	gst[x265enc]=
 	gst[x264enc]=gstreamer1.0-plugins-ugly
 	gst[rtph265pay]=
-elif [ "${PLATFORM}" == "RPIX" ] ; then
-	gst[omxh264enc]=
+elif [ "${PLATFORM}" == "RPIX" ] ; then	
 elif [ "${PLATFORM}" == "NVID" ] ; then
 	gst[h265parse]=
 	gst[rtph265pay]=
