@@ -74,10 +74,7 @@ if [ "${PLATFORM}" == "IMX6" ] ; then
 elif [ "${PLATFORM}" == "RPIX" ] ; then
 	gst[omxh264enc]=
 elif [ "${PLATFORM}" == "NVID" ] ; then
-	gst[omxh264enc]=
-	gst[nvv4l2decoder]=
 	gst[h265parse]=
-	gst[nvv4l2h264enc]=
 	gst[rtph265pay]=
 else
 	#gst[autoaudiosink]=gstreamer1.0-plugins-bad
