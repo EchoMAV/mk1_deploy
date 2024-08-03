@@ -48,7 +48,7 @@ dependencies:
 
 cellular:
 # install sierra wireless USB driver. This is not strictly neccesary but may be required if all the interfaces are needed (DM, NMEA, AT), should show up as /dev/ttuUSB0, 1, 2
-	@if [ -d "$(SW_LOCATION)" ] ; then echo "" && echo "Installing Sierra Wireless Driver..." && echo "" && cd $(SW_LOCATION) && make && make install ; fi		
+#	@if [ -d "$(SW_LOCATION)" ] ; then echo "" && echo "Installing Sierra Wireless Driver..." && echo "" && cd $(SW_LOCATION) && make && make install ; fi		
 # run script which sets up nmcli "attcell" connection. Remove --defaults if you want it to be interactive, otherwise it'll use the default ATT APN: Broadband
 	@$(SUDO) ./ensure-cellular.sh --defaults
 
