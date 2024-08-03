@@ -148,8 +148,8 @@ install: dependencies
 	@$(MAKE) --no-print-directory enable
 
 # install cellular
-	@echo "Setting up cellular connection..."
-	@$(MAKE) --no-print-directory cellular
+#	@echo "Setting up cellular connection..."
+#	@$(MAKE) --no-print-directory cellular
 
 # provision the network
 	@echo "Starting interactive session to set up the network..."
