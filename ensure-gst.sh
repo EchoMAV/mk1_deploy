@@ -35,8 +35,6 @@ elif [ "${PLATFORM}" == "RPIX" ] ; then
 	pkgdeps[gstreamer1.0-opencv]=true
 	pkgdeps[gstreamer1.0-rtsp]=true
 	pkgdeps[gstreamer1.0-vaapi]=true
-elif [ "${PLATFORM}" == "NVID" ] ; then
-	true
 else
 	pkgdeps[gstreamer1.0-libav]=true
 fi
