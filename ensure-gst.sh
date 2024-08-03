@@ -35,6 +35,8 @@ elif [ "${PLATFORM}" == "RPIX" ] ; then
 	pkgdeps[gstreamer1.0-opencv]=true
 	pkgdeps[gstreamer1.0-rtsp]=true
 	pkgdeps[gstreamer1.0-vaapi]=true
+elif [ "${PLATFORM}" == "NVID" ] ; then
+	true
 else
 	pkgdeps[gstreamer1.0-libav]=true
 fi
@@ -70,6 +72,7 @@ if [ "${PLATFORM}" == "IMX6" ] ; then
 	gst[x264enc]=gstreamer1.0-plugins-ugly
 	gst[rtph265pay]=
 elif [ "${PLATFORM}" == "RPIX" ] ; then	
+	true
 elif [ "${PLATFORM}" == "NVID" ] ; then
 	gst[h265parse]=
 	gst[rtph265pay]=
