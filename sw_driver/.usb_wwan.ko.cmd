@@ -1,1 +1,0 @@
-cmd_/home/brad/mk1_deploy/sw_driver/usb_wwan.ko := ld -r  -m elf_x86_64 -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /home/brad/mk1_deploy/sw_driver/usb_wwan.ko /home/brad/mk1_deploy/sw_driver/usb_wwan.o /home/brad/mk1_deploy/sw_driver/usb_wwan.mod.o;  true

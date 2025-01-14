@@ -1,1 +1,0 @@
-cmd_/home/brad/mk1_deploy/sw_driver/qcserial.ko := ld -r  -m elf_x86_64 -z noexecstack   --build-id=sha1  -T scripts/module.lds -o /home/brad/mk1_deploy/sw_driver/qcserial.ko /home/brad/mk1_deploy/sw_driver/qcserial.o /home/brad/mk1_deploy/sw_driver/qcserial.mod.o;  true

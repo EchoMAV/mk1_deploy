@@ -1,1 +1,0 @@
-cmd_/home/brad/mk1_deploy/sw_driver/modules.order := {   echo /home/brad/mk1_deploy/sw_driver/qcserial.ko;   echo /home/brad/mk1_deploy/sw_driver/usb_wwan.ko;   echo /home/brad/mk1_deploy/sw_driver/qmi_wwan.ko; :; } | awk '!x[$$0]++' - > /home/brad/mk1_deploy/sw_driver/modules.order
