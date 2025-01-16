@@ -19,7 +19,6 @@ SERVICES=mavnetProxy.service temperature.service video.service edge.service
 SYSCFG=/usr/local/echopilot/mavnetProxy
 DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
-SW_LOCATION=sw_driver
 N2N_REPO=https://github.com/ntop/n2n.git
 N2N_REV=3.1.1
 
@@ -47,10 +46,11 @@ dependencies:
 	@$(SUDO) apt-get install speedtest
 
 cellular:
+	@rm -rf /tmp/cellular_drivers && cd /tmp/ && echo "Downloading Cellular Driver Source Code..." && git clone https://github.com/EchoMAV/cellular_drivers
 # install sierra wireless USB driver. This is not strictly neccesary but may be required if all the interfaces are needed (DM, NMEA, AT), should show up as /dev/ttuUSB0, 1, 2
-#	@if [ -d "$(SW_LOCATION)" ] ; then echo "" && echo "Installing Sierra Wireless Driver..." && echo "" && cd $(SW_LOCATION) && make && make install ; fi		
-# run script which sets up nmcli "attcell" connection. Remove --defaults if you want it to be interactive, otherwise it'll use the default ATT APN: Broadband
-	@$(SUDO) ./ensure-cellular.sh --defaults
+	@echo "Building Sierra Wireless Driver..." && cd /tmp/cellular_drivers/sw_driver && make && echo "Installing Sierra Wireless Driver..." && make install
+# run script which sets up nmcli "Cellular" connection with given apn (defaults to teal if not supplied)
+	@echo "Configuring Cellular Network Interface..." && cd /tmp/cellular_drivers/scripts && $(SUDO) ./ensure-cellular.sh --apn $(apn)
 
 network:
 # start an interactive session to configure the network
