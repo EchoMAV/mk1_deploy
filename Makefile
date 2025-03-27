@@ -21,6 +21,7 @@ DRY_RUN=false
 PLATFORM ?= $(shell python serial_number.py | cut -c1-4)
 N2N_REPO=https://github.com/ntop/n2n.git
 N2N_REV=3.1.1
+APN=teal
 
 .PHONY = clean dependencies cockpit cellular network enable install provision see uninstall n2n
 
