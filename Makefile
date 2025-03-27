@@ -85,7 +85,7 @@ cockpit:
 
 disable:
 	@( for c in stop disable ; do $(SUDO) systemctl $${c} $(SERVICES) ; done ; true )
-	@$(SUDO) nmcli con down attcell ; $(SUDO) nmcli con delete "attcell"
+	@$(SUDO) nmcli con down Cellular ; $(SUDO) nmcli con delete "Cellular"
 
 enable:
 	@echo "Installing service files..."
@@ -175,7 +175,7 @@ see:
 	$(SUDO) cat $(SYSCFG)/video.conf
 	$(SUDO) cat $(SYSCFG)/edge.conf
 	@echo -n "Cellular APN is: "
-	@$(SUDO) nmcli con show attcell | grep gsm.apn | cut -d ":" -f2 | xargs
+	@$(SUDO) nmcli con show Cellular | grep gsm.apn | cut -d ":" -f2 | xargs
 
 
 uninstall:
