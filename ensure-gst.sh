@@ -76,6 +76,7 @@ elif [ "${PLATFORM}" == "RPIX" ] ; then
 elif [ "${PLATFORM}" == "NVID" ] ; then
 	gst[h265parse]=
 	gst[rtph265pay]=
+	gst[nvv4l2decoder]=nvidia-l4t-gstreamer
 else
 	#gst[autoaudiosink]=gstreamer1.0-plugins-bad
 	#gst[autovideosink]=gstreamer1.0-plugins-bad

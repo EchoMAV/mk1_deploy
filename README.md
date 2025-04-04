@@ -30,9 +30,6 @@ Generally to be used along side https://github.com/echomav/mk1_video.git
 ## Supported Platforms
 These platforms are supported/tested:
 
-
- * Raspberry PI
-   - [ ] [Raspbian GNU/Linux 10 (buster)](https://www.raspberrypi.org/downloads/raspbian/)
- * Jetson Nano
-   - [x] [Jetpack 4.6.x]
+ * Jetson Orin
+   - [x] [Jetpack 6.X]
 
