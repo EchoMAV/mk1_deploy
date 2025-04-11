@@ -4,7 +4,10 @@
 ## Dependencies
 
 Requires git-lfs
-```sudo apt-get install git-lfs -y```
+```
+sudo apt update
+sudo apt-get -o DPkg::Lock::Timeout=-1 install git-lfs -y
+```
 
 Other dependencies will be installed automatically by during a `make install` assuming you have an internet connection  
 
@@ -13,7 +16,8 @@ Other dependencies will be installed automatically by during a `make install` as
 To perform an initial install, establish an internet connection and clone the repository.
 You will issue the following commands:
 ```
-sudo apt-get install git-lfs -y
+sudo apt update
+sudo apt-get -o DPkg::Lock::Timeout=-1 install git-lfs -y
 cd $HOME
 git clone https://github.com/echomav/mk1_deploy.git
 make -C $HOME/mk1_deploy install

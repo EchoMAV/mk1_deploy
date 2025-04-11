@@ -42,9 +42,9 @@ clean:
 	@if [ -d src ] ; then cd src && make clean ; fi
 
 dependencies:	
-	@if [ ! -z "$(PKGDEPS)" ] ; then $(SUDO) apt-get install -y $(PKGDEPS) ; fi
+	@if [ ! -z "$(PKGDEPS)" ] ; then $(SUDO) apt-get -o DPkg::Lock::Timeout=-1 install -y $(PKGDEPS) ; fi
 	@curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | $(SUDO) bash
-	@$(SUDO) apt-get install speedtest
+	@$(SUDO) apt-get -o DPkg::Lock::Timeout=-1 install speedtest
 
 cellular:
 	@rm -rf /tmp/cellular_drivers && cd /tmp/ && echo "Downloading Cellular Driver Source Code..." && git clone https://github.com/EchoMAV/cellular_drivers

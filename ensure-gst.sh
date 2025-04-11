@@ -9,11 +9,11 @@ SUDO=$(test ${EUID} -ne 0 && which sudo)
 if [ "$1" == "--dry-run" ] ; then DRY_RUN=true && SUDO="echo ${SUDO}" ; fi
 
 if [ "${PLATFORM}" == "RPIX" ] ; then
-	$SUDO apt-get install -y gstreamer1.0-tools
+	$SUDO apt-get -o DPkg::Lock::Timeout=-1 install -y gstreamer1.0-tools
 elif ! GST_VERSION=$(gst-launch-1.0 --version | head -1 | cut -f3 -d' ') ; then
 	# Core modules needed for gst-inspect-1.0
 	if [ -x $(which apt-get) ] && ! $DRY_RUN ; then
-		$SUDO apt-get install -y gstreamer1.0-tools gstreamer1.0-doc
+		$SUDO apt-get -o DPkg::Lock::Timeout=-1 install -y gstreamer1.0-tools gstreamer1.0-doc
 	else
 		exit 1
 	fi
@@ -129,7 +129,7 @@ fi
 set -e
 if [ "${#todo[@]}" -gt 0 ] ; then
     if [ -x $(which apt-get) ] ; then
-	$SUDO apt-get install -y ${!todo[@]}
+	$SUDO apt-get -o DPkg::Lock::Timeout=-1 install -y ${!todo[@]}
     else
         echo "Please run: apt-get install -y ${!todo[@]}"
 	exit ${#todo[@]}

@@ -67,7 +67,7 @@ if $DRY_RUN ; then
 fi
 if [ "${#pkgdeps[@]}" -gt 0 ] ; then
     if [ -x $(which apt-get) ] ; then
-	$SUDO apt-get install -y ${!pkgdeps[@]}
+	$SUDO apt-get -o DPkg::Lock::Timeout=-1 install -y ${!pkgdeps[@]}
     else
         echo "Please run: apt-get install -y ${!pkgdeps[@]}"
 	exit ${#pkgdeps[@]}

@@ -8,7 +8,7 @@ DRY_RUN=false
 LOCAL=/usr/local
 SUDO=$(test ${EUID} -ne 0 && which sudo)
 
-$SUDO apt-get install -y cockpit
+$SUDO apt-get -o DPkg::Lock::Timeout=-1 install -y cockpit
 
 # Change the port to 443/80 and restart
 
