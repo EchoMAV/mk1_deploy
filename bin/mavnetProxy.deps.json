@@ -27,7 +27,7 @@
           "Sodium.Core": "1.3.5",
           "System.CommandLine": "2.0.0-beta1.21308.1",
           "System.Device.Gpio": "3.2.0",
-          "System.IO.Ports": "8.0.0",
+          "System.IO.Ports": "9.0.4",
           "System.Net.Sockets": "4.3.0",
           "WorkflowCore": "3.10.0",
           "WorkflowCore.Persistence.Sqlite": "3.10.0",
@@ -688,6 +688,10 @@
           }
         }
       },
+      "runtime.android-arm.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.android-arm64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.android-x64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.android-x86.runtime.native.System.IO.Ports/9.0.4": {},
       "runtime.any.System.Collections/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
@@ -713,28 +717,46 @@
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
-      "runtime.linux-arm.runtime.native.System.IO.Ports/8.0.0": {},
-      "runtime.linux-arm64.runtime.native.System.IO.Ports/8.0.0": {
+      "runtime.linux-arm.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.linux-arm64.runtime.native.System.IO.Ports/9.0.4": {
         "native": {
           "runtimes/linux-arm64/native/libSystem.IO.Ports.Native.so": {
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "runtime.linux-x64.runtime.native.System.IO.Ports/8.0.0": {},
+      "runtime.linux-bionic-arm64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.linux-bionic-x64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.linux-musl-arm.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.linux-musl-arm64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.linux-musl-x64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.linux-x64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.maccatalyst-arm64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.maccatalyst-x64.runtime.native.System.IO.Ports/9.0.4": {},
       "runtime.native.System/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "5.0.0",
           "Microsoft.NETCore.Targets": "1.1.0"
         }
       },
-      "runtime.native.System.IO.Ports/8.0.0": {
+      "runtime.native.System.IO.Ports/9.0.4": {
         "dependencies": {
-          "runtime.linux-arm.runtime.native.System.IO.Ports": "8.0.0",
-          "runtime.linux-arm64.runtime.native.System.IO.Ports": "8.0.0",
-          "runtime.linux-x64.runtime.native.System.IO.Ports": "8.0.0",
-          "runtime.osx-arm64.runtime.native.System.IO.Ports": "8.0.0",
-          "runtime.osx-x64.runtime.native.System.IO.Ports": "8.0.0"
+          "runtime.android-arm.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.android-arm64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.android-x64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.android-x86.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-arm.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-arm64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-bionic-arm64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-bionic-x64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-musl-arm.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-musl-arm64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-musl-x64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.linux-x64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.maccatalyst-arm64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.maccatalyst-x64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.osx-arm64.runtime.native.System.IO.Ports": "9.0.4",
+          "runtime.osx-x64.runtime.native.System.IO.Ports": "9.0.4"
         }
       },
       "runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -753,8 +775,8 @@
       },
       "runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
-      "runtime.osx-arm64.runtime.native.System.IO.Ports/8.0.0": {},
-      "runtime.osx-x64.runtime.native.System.IO.Ports/8.0.0": {},
+      "runtime.osx-arm64.runtime.native.System.IO.Ports/9.0.4": {},
+      "runtime.osx-x64.runtime.native.System.IO.Ports/9.0.4": {},
       "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
       "runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -1031,14 +1053,14 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.IO.Ports/8.0.0": {
+      "System.IO.Ports/9.0.4": {
         "dependencies": {
-          "runtime.native.System.IO.Ports": "8.0.0"
+          "runtime.native.System.IO.Ports": "9.0.4"
         },
         "runtime": {
           "runtimes/unix/lib/net8.0/System.IO.Ports.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.23.53103"
+            "assemblyVersion": "9.0.0.4",
+            "fileVersion": "9.0.425.16305"
           }
         }
       },
@@ -1772,6 +1794,34 @@
       "path": "redcorners.exiflibrary/2.0.0",
       "hashPath": "redcorners.exiflibrary.2.0.0.nupkg.sha512"
     },
+    "runtime.android-arm.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5nNvTbKRkrIYTm48h2n2gPR4Roat2W1ALkThnqeKuGYcnTVMnrAXi0IfLZR3IhIlQ3CfQ4zqjTWFHk3O2/cQDQ==",
+      "path": "runtime.android-arm.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.android-arm.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.android-arm64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zSIn0tjbcEMj8SCerMo1UGq1dKWbTXTM2qtu0O8h+C0QsPh6L0DZKd92kHuVe3DsryotKVdqHivbQv3JCUHX6A==",
+      "path": "runtime.android-arm64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.android-arm64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.android-x64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ut0XmnR22XEhVH9niETFA5MX18ri8Hj273iC2v4B4GxVdczjdIdoCV/NXEqr0Krq9ngK5IQr2bZ8cGu9l4i1Yg==",
+      "path": "runtime.android-x64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.android-x64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.android-x86.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t194lL5QZ9wYU5DmR8YApguB7bshAngwi89sttOPcGwBZxUdW9Zxg30VXAnecPwy2f0kulHyfhyHac216rABKw==",
+      "path": "runtime.android-x86.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.android-x86.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
     "runtime.any.System.Collections/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -1891,26 +1941,75 @@
       "path": "runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
-    "runtime.linux-arm.runtime.native.System.IO.Ports/8.0.0": {
+    "runtime.linux-arm.runtime.native.System.IO.Ports/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-gK720fg6HemDg8sXcfy+xCMZ9+hF78Gc7BmREbmkS4noqlu1BAr9qZtuWGhLzFjBfgecmdtl4+SYVwJ1VneZBQ==",
-      "path": "runtime.linux-arm.runtime.native.system.io.ports/8.0.0",
-      "hashPath": "runtime.linux-arm.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+      "sha512": "sha512-45EPNw3aK3C/LNb/n3J4fLoDAZHMBpQJ/c1wcsJQZXp/w4s7MIHceYB9xqhYjCmtSOE2pBhDgogtRzfETHfriw==",
+      "path": "runtime.linux-arm.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-arm.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
     },
-    "runtime.linux-arm64.runtime.native.System.IO.Ports/8.0.0": {
+    "runtime.linux-arm64.runtime.native.System.IO.Ports/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-KYG6/3ojhEWbb3FwQAKgGWPHrY+HKUXXdVjJlrtyCLn3EMcNTaNcPadb2c0ndQzixZSmAxZKopXJr0nLwhOrpQ==",
-      "path": "runtime.linux-arm64.runtime.native.system.io.ports/8.0.0",
-      "hashPath": "runtime.linux-arm64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+      "sha512": "sha512-27N/9PkhBqSGKtdop6Qg4AOdcAtWeGQSUeBVF+oijFPTAZvlcugmtxLZRldovEjd2SZL30PiOjoVIQWKD6kR1w==",
+      "path": "runtime.linux-arm64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-arm64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
     },
-    "runtime.linux-x64.runtime.native.System.IO.Ports/8.0.0": {
+    "runtime.linux-bionic-arm64.runtime.native.System.IO.Ports/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Wnw5vhA4mgGbIFoo6l9Fk3iEcwRSq49a1aKwJgXUCUtEQLCSUDjTGSxqy/oMUuOyyn7uLHsH8KgZzQ1y3lReiQ==",
-      "path": "runtime.linux-x64.runtime.native.system.io.ports/8.0.0",
-      "hashPath": "runtime.linux-x64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+      "sha512": "sha512-T7Z3P/NjvCetnKBvb3/azngU7KvN9i9iNZaywK4Gptoi/OZNUT1Zh2btwSFC3p8dKtG7YdtSASG556bVPGWMCA==",
+      "path": "runtime.linux-bionic-arm64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-bionic-arm64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.linux-bionic-x64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dbf+R8kZcJo0hAbQhcDjRZKBO5b8Nge8hJVCe/U8yo5cZY8ryDlwGfDkUemFeKdI6cxzcV6t+B6YsO6HzwzZvw==",
+      "path": "runtime.linux-bionic-x64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-bionic-x64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.linux-musl-arm.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-H9ObF2A79dVfVKwNQ9zEOlIgAr6Cufsz+eMALq8CQUcn3MX1F4tBlhtP5nE2JEK6ERTeIgKJ3Jt59tZ6Il1p5A==",
+      "path": "runtime.linux-musl-arm.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-musl-arm.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.linux-musl-arm64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zgqN6GKr/8mRQb1I3sLzHdCbxv01eXrWEorDu6dg2AktYX4ICsGiHzpm+SkeLxznIM68hMkslGr4A8FF1VLf6Q==",
+      "path": "runtime.linux-musl-arm64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-musl-arm64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.linux-musl-x64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ol6VYfBYGqSfqzcIPdIM6LOC8xnJjuJg3MUczi0vuSA0PfTYweep5DDyP3qmglh7wrSvvnaedAP6505Kp2jjPg==",
+      "path": "runtime.linux-musl-x64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-musl-x64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.linux-x64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/YaCelKLkIC57MAZ/1l7ctBG1q2CbwQxRwjjKLGt7eSqsX+A3IIG41hMsxFTCqIJisEPC8ov3zVTtnSKfop3vg==",
+      "path": "runtime.linux-x64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.linux-x64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.maccatalyst-arm64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3aVVHiHrK0iA3KhC+9k3H2kFccEZtzp9Q5qVB4WYPMx75+bvKq7YG/f8eImrnXY+0CawwdU4T2F1N/yyd3P1zw==",
+      "path": "runtime.maccatalyst-arm64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.maccatalyst-arm64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
+    },
+    "runtime.maccatalyst-x64.runtime.native.System.IO.Ports/9.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mY8meyI74mHWD8C+YD5T4glgH1moe/QYIvOjKoJp68oUa9H2hAq7KTvVD74u9ZMOU0Ectt7pj1jINziduYaXHg==",
+      "path": "runtime.maccatalyst-x64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.maccatalyst-x64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
     },
     "runtime.native.System/4.3.0": {
       "type": "package",
@@ -1919,12 +2018,12 @@
       "path": "runtime.native.system/4.3.0",
       "hashPath": "runtime.native.system.4.3.0.nupkg.sha512"
     },
-    "runtime.native.System.IO.Ports/8.0.0": {
+    "runtime.native.System.IO.Ports/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Ee7Sz5llLpTgyKIWzKI/GeuRSbFkOABgJRY00SqTY0OkTYtkB+9l5rFZfE7fxPA3c22RfytCBYkUdAkcmwMjQg==",
-      "path": "runtime.native.system.io.ports/8.0.0",
-      "hashPath": "runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+      "sha512": "sha512-8acFIuku7gZytPQ8IQXikr5gpYY+OmRL0hUQth6vUxTSgWHxTHt8O17BD+dnuSJTrT+oVjqcvFuE7y+GHZVu5A==",
+      "path": "runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.native.system.io.ports.9.0.4.nupkg.sha512"
     },
     "runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -1947,19 +2046,19 @@
       "path": "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "hashPath": "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512"
     },
-    "runtime.osx-arm64.runtime.native.System.IO.Ports/8.0.0": {
+    "runtime.osx-arm64.runtime.native.System.IO.Ports/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rbUBLAaFW9oVkbsb0+XSrAo2QdhBeAyzLl5KQ6Oci9L/u626uXGKInsVJG6B9Z5EO8bmplC8tsMiaHK8wOBZ+w==",
-      "path": "runtime.osx-arm64.runtime.native.system.io.ports/8.0.0",
-      "hashPath": "runtime.osx-arm64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+      "sha512": "sha512-aLNRjefYluZLbXK7vxU3CezR+Nrimff1OQivr71SoZCS5nLXPi8cSKib8apgdwiooR2fHOlGF+FR6k2D0l2B1A==",
+      "path": "runtime.osx-arm64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.osx-arm64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
     },
-    "runtime.osx-x64.runtime.native.System.IO.Ports/8.0.0": {
+    "runtime.osx-x64.runtime.native.System.IO.Ports/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IcfB4jKtM9pkzP9OpYelEcUX1MiDt0IJPBh3XYYdEISFF+6Mc+T8WWi0dr9wVh1gtcdVjubVEIBgB8BHESlGfQ==",
-      "path": "runtime.osx-x64.runtime.native.system.io.ports/8.0.0",
-      "hashPath": "runtime.osx-x64.runtime.native.system.io.ports.8.0.0.nupkg.sha512"
+      "sha512": "sha512-b4Ik3pgeaGXmy3J3+fa3QmZatpq0ikWq6toEQYKTHuGIL/0dzYWYIoUNvSTEbsr3IF7XZPrNOKTxK7tcIsMqWA==",
+      "path": "runtime.osx-x64.runtime.native.system.io.ports/9.0.4",
+      "hashPath": "runtime.osx-x64.runtime.native.system.io.ports.9.0.4.nupkg.sha512"
     },
     "runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -2206,12 +2305,12 @@
       "path": "system.io.filesystem.primitives/4.3.0",
       "hashPath": "system.io.filesystem.primitives.4.3.0.nupkg.sha512"
     },
-    "System.IO.Ports/8.0.0": {
+    "System.IO.Ports/9.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-MaiPbx2/QXZc62gm/DrajRrGPG1lU4m08GWMoWiymPYM+ba4kfACp2PbiYpqJ4QiFGhHD00zX3RoVDTucjWe9g==",
-      "path": "system.io.ports/8.0.0",
-      "hashPath": "system.io.ports.8.0.0.nupkg.sha512"
+      "sha512": "sha512-3YWwrBYZg2MabN7QYAOLToYJn551a+lXHsLW9biyXi+162+BjrkXrRsXioPSAoc+7mSim8B/iFPlOYc1BKnOhA==",
+      "path": "system.io.ports/9.0.4",
+      "hashPath": "system.io.ports.9.0.4.nupkg.sha512"
     },
     "System.Linq/4.3.0": {
       "type": "package",
