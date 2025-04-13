@@ -110,8 +110,8 @@ install: dependencies
 	@PLATFORM=$(PLATFORM) ./ensure-gstd.sh $(DRY_RUN)	
 
 # build and install n2n
-	@echo "Starting interactive session to set up N2N..."
-	@$(MAKE) --no-print-directory n2n
+#	@echo "Starting interactive session to set up N2N..."
+#	@$(MAKE) --no-print-directory n2n
 
 # install cockpit
 	@$(MAKE) --no-print-directory cockpit
@@ -157,7 +157,7 @@ install: dependencies
 	@$(MAKE) --no-print-directory network
 
 # provision n2n
-	@$(SUDO) python3 n2nConfigure.py --interactive --start
+#	@$(SUDO) python3 n2nConfigure.py --interactive --start
 
 # cleanup and final settings
 	@echo "Final cleanup..."

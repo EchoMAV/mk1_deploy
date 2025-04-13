@@ -102,8 +102,7 @@ function SuccessReadFile(content) {
         
         if(splitResult.length > 0) {
             gimbalPort.value = myConfig.GIMBAL_PORT;
-            videoHost.value = myConfig.VIDEOSERVER_HOST;
-           // videoPort.value = myConfig.VIDEOSERVER_PORT;
+            videoHost.value = myConfig.VIDEOSERVER_HOST;      
             videoName.value = myConfig.VIDEOSERVER_STREAMNAME;
             serverURL.innerHTML = "<a href='https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "' target='_blank'>https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value + "</a>";
             qrcode.makeCode("https://" + videoHost.value + "/LiveApp/play.html?id=" + videoName.value);

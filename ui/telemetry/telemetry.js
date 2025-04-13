@@ -11,6 +11,9 @@ const fmuId = document.getElementById("fmuId");
 const atakHost = document.getElementById("atakHost");
 const atakPort = document.getElementById("atakPort");
 const fmuConnStatus = document.getElementById("fmuConnStatus");
+var gimbalDataPort = "";
+var gimbalConn = "";
+
 const CONFIG_LENGTH = 11;
 // standard Baud rates
 const baudRateArray = [ 38400, 57600, 115200, 230400, 460800, 500000, 921600 ];
@@ -105,6 +108,8 @@ function SuccessReadFile(content) {
                 .catch(error => Fail("2", error));      
             atakHost.value = myConfig.ATAK_HOST;
             atakPort.value = myConfig.ATAK_PORT;
+            gimbalDataPort = myConfig.GIMBAL_DATA_PORT;
+            gimbalConn = myConfig.GIMBAL_CONN;
         }
         else{
             FailureReadFile(new Error("Too few parameters in file"));
@@ -147,6 +152,8 @@ function FailureReadFile(error) {
     fmuId.value = "1";
     atakHost.value = "239.2.3.1";
     atakPort.value = "6969";       
+    gimbalDataPort = "10043";
+    gimbalConn = "eth0,172.20.1.1:10024";
 }
 
 // The callback on the enable button
@@ -173,7 +180,9 @@ function EnableService(){
         "LOS_IFACE=" + losIface.value + "\n" +
         "ATAK_HOST=" + atakHost.value + "\n" +
         "ATAK_PORT=" + atakPort.value + "\n" +
-        "ENABLED=" + enabled.toString() + "\n";
+        "ENABLED=" + enabled.toString() + "\n" +
+        "GIMBAL_DATA_PORT=" + gimbalDataPort + "\n" +
+        "GIMBAL_CONN=" + gimbalConn + "\n";
 
     cockpit.file(confLocation + "mavnetProxy.conf").replace(fileString)
         .then(CreateSystemDService).catch(error => {output.innerHTML = error.message});
@@ -206,7 +215,9 @@ function DisableService(){
         //"BACKUP_IFACE=" + backupIface.value + "\n" +
         "ATAK_HOST=" + atakHost.value + "\n" +
         "ATAK_PORT=" + atakPort.value + "\n" +
-        "ENABLED=" + enabled.toString() + "\n";
+        "ENABLED=" + enabled.toString() + "\n" +
+        "GIMBAL_DATA_PORT=" + gimbalDataPort + "\n" +
+        "GIMBAL_CONN=" + gimbalConn + "\n";
 
     cockpit.file(confLocation + "h31proxy.conf").replace(fileString)
         .then(RemoveSystemLinks).catch(error => {output.innerHTML = error.message});
@@ -252,7 +263,9 @@ function SaveSettings() {
        "FMU_BAUDRATE=" + baudrate.value + "\n" +
        "FMU_SYSID=" + fmuId.value + "\n" +        
        "ATAK_HOST=" + atakHost.value + "\n" +
-       "ATAK_PORT=" + atakPort.value + "\n";       
+       "ATAK_PORT=" + atakPort.value + "\n" +
+       "GIMBAL_DATA_PORT=" + gimbalDataPort + "\n" +
+       "GIMBAL_CONN=" + gimbalConn + "\n";
 
    cockpit.file(confLocation + "mavnetProxy.conf", { superuser : "try" }).replace(fileString)
        .then(Success)
