@@ -16,7 +16,7 @@ var gimbalConn = "";
 
 const CONFIG_LENGTH = 11;
 // standard Baud rates
-const baudRateArray = [ 38400, 57600, 115200, 230400, 460800, 500000, 921600 ];
+const baudRateArray = [ 38400, 57600, 115200, 230400, 460800, 500000, 921600, 1500000, 2000000 ];
 
 enabled = true;
 // Runs the initPage when the document is loaded
